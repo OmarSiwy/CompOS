@@ -1,0 +1,29 @@
+name: Zig Tests
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    - name: Set up Docker Compose
+      run: docker-compose version
+
+    - name: Build and Test with Docker Compose
+      run: |
+        docker-compose up --build --abort-on-container-exit test
+      env:
+        CI: true
+
+    - name: Clean up
+      run: docker-compose down

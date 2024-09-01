@@ -1,0 +1,34 @@
+services:
+  build-static:
+    build: .
+    command: >
+      zig build -DLibrary-Type=Static -DOptimization=ReleaseFast -DCompile-Target=M0
+    volumes:
+      - .:/app
+    working_dir: /app
+
+  build-shared:
+    build: .
+    command: >
+      zig build -DLibrary-Type=Shared -DOptimization=ReleaseFast -DCompile-Target=M0
+    volumes:
+      - .:/app
+    working_dir: /app
+
+  test:
+    build: .
+    command: >
+      zig test tests/All_test.zig -lc -lA-RTOS-M -I./inc -L./zig-out/lib/ 2>&1|cat
+    volumes:
+      - .:/app
+    working_dir: /app
+    depends_on:
+      - build-shared
+
+  cdb:
+    build: .
+    command: >
+      zig build cdb -DLibrary-Type=Shared -DOptimization=ReleaseFast -DCompile-Target=M0 -freference-trace
+    volumes:
+      - .:/app
+    working_dir: /app

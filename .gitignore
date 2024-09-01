@@ -1,0 +1,6 @@
+# Ignore Zig cache directories
+zig-cache/
+.zig-cache/
+zig-out/
+
+compile_commands.json
