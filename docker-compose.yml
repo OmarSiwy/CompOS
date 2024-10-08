@@ -2,7 +2,7 @@ services:
   build-static:
     build: .
     command: >
-      zig build -DLibrary-Type=Static -DOptimization=ReleaseFast -DCompile-Target=M0
+      zig build -DLibrary_Type=Static -DOptimization=ReleaseFast -DCompile_Target=M0
     volumes:
       - .:/app
     working_dir: /app
@@ -10,7 +10,7 @@ services:
   build-shared:
     build: .
     command: >
-      zig build -DLibrary-Type=Shared -DOptimization=ReleaseFast -DCompile-Target=M0
+      zig build -DLibrary_Type=Shared -DOptimization=ReleaseFast -DCompile_Target=M0
     volumes:
       - .:/app
     working_dir: /app
@@ -28,7 +28,7 @@ services:
   cdb:
     build: .
     command: >
-      zig build cdb -DLibrary-Type=Shared -DOptimization=ReleaseFast -DCompile-Target=M0 -freference-trace
+      zig build cdb -DLibrary_Type=Shared -DOptimization=ReleaseFast -DCompile_Target=M0 -freference-trace
     volumes:
       - .:/app
     working_dir: /app

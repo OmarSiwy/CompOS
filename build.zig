@@ -40,7 +40,7 @@ pub fn build(b: *std.Build) !void {
         OptimizeMode.ReleaseSmall => std.builtin.Mode.ReleaseSmall,
     };
 
-    const build_target = b.option(TargetType, "Compile-Target", "The Build Target to use from @TargetType").?; // What Target are you building for, refer to @TargetType
+    const build_target = b.option(TargetType, "Compile_Target", "The Build Target to use from @TargetType").?; // What Target are you building for, refer to @TargetType
     const target = switch (build_target) { // Picks Linker Script to provide to consumer, and target details
         TargetType.M0 => b.standardTargetOptions(.{}),
         TargetType.M1 => b.standardTargetOptions(.{}),
@@ -49,7 +49,7 @@ pub fn build(b: *std.Build) !void {
         TargetType.M4 => b.standardTargetOptions(.{}),
     };
 
-    const lib_type = b.option(LibraryType, "Library-Type", "The Type of Library to use from @LibraryType").?; // Shared or Static Library, refer to @Library-Type
+    const lib_type = b.option(LibraryType, "Library_Type", "The Type of Library to use from @LibraryType").?; // Shared or Static Library, refer to @Library-Type
     const lib = switch (lib_type) {
         LibraryType.Static => b.addStaticLibrary(.{
             .name = "A-RTOS-M",
@@ -117,7 +117,7 @@ pub fn build(b: *std.Build) !void {
     const run_unit_tests = b.addRunArtifact(main_tests);
     test_step.dependOn(&run_unit_tests.step);
 
-    // COMPILE COMMANDS FOR INTELLISENSE ________________________________________________________________
+    // COMPILE COMMANDS FOR INTELLISENSE _________________________________________________________
     var targets = std.ArrayList(*std.Build.Step.Compile).init(b.allocator);
     defer targets.deinit();
     targets.append(lib) catch @panic("OOM");
