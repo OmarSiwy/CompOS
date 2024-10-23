@@ -1,0 +1,16 @@
+.{
+    .name = "examples/Pic18f4550",
+    .version = "0.0.0",
+    .dependencies = .{
+        .@"microzig/build" = .{ .path = "../../../build" },
+        .@"microzig/port/microchip/avr" = .{ .path = "../../../port/microchip/avr" },
+    },
+
+    .paths = .{
+        "LICENSE",
+        "build.zig",
+        "build.zig.zon",
+        "src",
+        "tools",
+    },
+}

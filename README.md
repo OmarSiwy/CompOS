@@ -1,19 +1,11 @@
 ### Event-Driven RTOS (Currently in heavy development)
 
-switches task only when an event of higher priority is ready (priority scheduling/preemptive priority)
+### Learning:
 
-a task has 3 states
-
-- Running (runnign on cpy)
-- Ready (ready to be executed)
-- Blocked (waiting for an event)
-
-these tasks are placed in a queue
-
-[[Resource Starvation]]
-Happens when a process is denied neccesary resources to process it work, usually occurs due to scheduling or mutual exlcusion algorithms, can cause **denial-of-service attack**
-
-[[How to include it it into your program]]
+- [ ] Task Scheduling (Task Switching and Scheduling Algorithms)
+- [ ] Memory Management (Stacks and Heaps, dynamic memory allocation)
+- [ ] Interrupt Handling (Interrupt Service Routines)
+- [ ] Synchronization Primitives (Mutexes, Semaphores, and Event Flags)
 
 ### Zig
 

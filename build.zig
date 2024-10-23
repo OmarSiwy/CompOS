@@ -66,7 +66,7 @@ pub fn build(b: *std.Build) !void {
     };
     std.debug.print("Lib Type: {any} | OptimizeMode: {any} | Build Target: {any}\n", .{ lib_type, optimize, target });
 
-    // Collect & Compile all source files
+    // Collect & Compile all source files (.c and .zig)
     var sources = std.ArrayList([]const u8).init(b.allocator); // Array to store all file addresses
     defer sources.deinit();
     {
@@ -74,15 +74,26 @@ pub fn build(b: *std.Build) !void {
         var walker = try dir.walk(b.allocator);
         defer walker.deinit();
 
-        const allowed_exts = [_][]const u8{".c"};
+        const allowed_exts_c = [_][]const u8{".c"};
+        const allowed_exts_zig = [_][]const u8{".zig"};
         while (try walker.next()) |entry| {
             const ext = std.fs.path.extension(entry.basename);
-            const include_file = for (allowed_exts) |e| {
-                if (std.mem.eql(u8, ext, e))
-                    break true;
+
+            // Handle C files
+            const is_c_file = for (allowed_exts_c) |e| {
+                if (std.mem.eql(u8, ext, e)) break true;
             } else false;
-            if (include_file) { // if file extension is .c, then added it ot the array
+            if (is_c_file) {
                 try sources.append(b.pathJoin(&[_][]const u8{ "src", entry.path }));
+                continue;
+            }
+
+            // Handle Zig files
+            const is_zig_file = for (allowed_exts_zig) |e| {
+                if (std.mem.eql(u8, ext, e)) break true;
+            } else false;
+            if (is_zig_file) {
+                lib.addSourceFile(b.pathJoin(&[_][]const u8{ "src", entry.path }));
             }
         }
     }
