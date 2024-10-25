@@ -12,11 +12,11 @@ pub fn build(b: *std.Build) !void {
         .Library_Type = "Static",
     });
 
-    ARTOS.linker.generateLinker(target_name, output_path) catch {
+    const linker = ARTOS.artifact("A_RTOS_M");
+    linker.linker.generateLinker(target_name, output_path) catch {
         std.debug.print("Failed to generate linker script for target: {s}\n", .{target_name});
         return;
     };
-
     const exe = b.addExecutable(.{
         .name = "project",
         .target = target,
