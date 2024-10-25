@@ -23,7 +23,7 @@ jobs:
       run: |
         echo "::set-output name=version::${GITHUB_REF#refs/tags/}"
 
-    - uses: mlugg/setup-zig@v1
+    - uses: ziglang/zig@v1
       with:
         version: 0.13.0
     - name: Check zig version

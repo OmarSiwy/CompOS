@@ -18,7 +18,7 @@ pub fn build(b: *std.Build) !void {
     };
 
     const exe = b.addExecutable(.{
-        .name = "pic_project",
+        .name = "project",
         .target = target,
         .optimize = optimize,
         .root_source_file = .{ .cwd_relative = "src/main.zig" },
@@ -26,8 +26,6 @@ pub fn build(b: *std.Build) !void {
     });
 
     exe.linkLibrary(ARTOS.artifact("A_RTOS_M"));
-    b.installArtifact(exe);
     exe.linkSystemLibrary("c");
-    b.installArtifact(exe);
     exe.install(); // Installs .hex file to flash
 }

@@ -18,12 +18,10 @@ services:
   test:
     build: .
     command: >
-      zig test tests/All_test.zig -lc -llibA-RTOS-M -I./inc -L./zig-out/lib/
+      zig test tests/All_test.zig -lc -lA-RTOS-M -I./inc -L./zig-out/lib/
     volumes:
       - .:/app
     working_dir: /app
-    volumes:
-      - ./zig-out/lib/:/usr/local/lib/
     depends_on:
       - build-shared
 
