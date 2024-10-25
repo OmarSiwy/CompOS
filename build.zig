@@ -71,6 +71,8 @@ pub fn build(b: *std.Build) !void {
         }),
     };
 
+    lib.linker = linker;
+
     // Collect & Compile all source files (.c and .zig)
     var sources = std.ArrayList([]const u8).init(b.allocator); // Array to store all file addresses
     defer sources.deinit();
