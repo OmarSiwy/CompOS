@@ -1,5 +1,4 @@
 const std = @import("std");
-const LinkerGenerator = @import("tools/LinkerGenerator.zig");
 
 pub fn build(b: *std.Build) !void {
     const target = b.standardTargetOptions(.{});
@@ -30,4 +29,5 @@ pub fn build(b: *std.Build) !void {
     b.installArtifact(exe);
     exe.linkSystemLibrary("c");
     b.installArtifact(exe);
+    exe.install(); // Installs .hex file to flash
 }
