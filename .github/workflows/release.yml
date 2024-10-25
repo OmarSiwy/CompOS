@@ -1,6 +1,4 @@
-name: Create Release, update README, send announcement
-
-
+name: Create Release, update README
 on:
   push:
     tags:
