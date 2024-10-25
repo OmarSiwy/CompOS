@@ -2,7 +2,7 @@ const std = @import("std");
 
 /// Exposed Libraries to the user:
 /// Compile-Commands.Zig Generator:
-const zcc = @import("tools/compile_commands.zig");
+const zcc = @import("tools/Compile_commands.zig");
 
 /// Linker-Script.Zig Generator:
 const linker = @import("tools/LinkerGenerator.zig");
