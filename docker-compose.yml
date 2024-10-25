@@ -36,7 +36,7 @@ services:
   linker:
     build: .
     command: >
-      zig zig build-exe tools/LinkerGenerator.zig -O ReleaseFast -o generate_linker_script && ./generate_linker_script STM32F103 examples/Pic18f4550/linker.ld
+      zig build-exe tools/LinkerGenerator.zig -O ReleaseFast -o generate_linker_script && ./generate_linker_script STM32F103 examples/Pic18f4550/linker.ld
     volumes:
       - .:/app
     working_dir: /app

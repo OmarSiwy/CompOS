@@ -1,25 +1,14 @@
 const std = @import("std");
-const zcc = @import("compile_commands.zig");
 
-const LibraryType = enum {
-    Static,
-    Shared,
-};
+/// Exposed Libraries to the user:
+/// Compile-Commands.Zig Generator:
+const zcc = @import("tools/compile_commands.zig");
 
-const OptimizeMode = enum {
-    Debug,
-    ReleaseSafe,
-    ReleaseFast,
-    ReleaseSmall,
-};
+/// Linker-Script.Zig Generator:
+const linker = @import("tools/LinkerGenerator.zig");
 
-const TargetType = enum {
-    M0,
-    M1,
-    M2,
-    M3,
-    M4,
-};
+/// Target Selection for Building:
+const suptarget = @import("tools/SupportedTargets.zig");
 
 const cflags = .{
     "-std=c99",
@@ -30,41 +19,57 @@ const cflags = .{
     "-ffast-math",
 };
 
+const OptimizeMode = enum { Debug, ReleaseSafe, ReleaseFast, ReleaseSmall };
+const LibraryType = enum { Static, Shared };
+
 pub fn build(b: *std.Build) !void {
-    // Options to Build Library according to needs
-    const optimize_mode = b.option(OptimizeMode, "Optimization", "The Optimization level to use from @OptimizeMode").?; // What Optimization Mode would you like, refer to @OptimizeMode
+    // Optimization Mode
+    const optimize_mode_str = b.option([]const u8, "Optimization", "The Optimization level").?;
+    const optimize_mode = std.meta.stringToEnum(OptimizeMode, optimize_mode_str) orelse {
+        std.debug.print("Received unknown optimization mode: {s}\n", .{optimize_mode_str});
+        return error.UnknownOptimizationMode;
+    };
     const optimize = switch (optimize_mode) {
-        OptimizeMode.Debug => std.builtin.Mode.Debug,
-        OptimizeMode.ReleaseSafe => std.builtin.Mode.ReleaseSafe,
-        OptimizeMode.ReleaseFast => std.builtin.Mode.ReleaseFast,
-        OptimizeMode.ReleaseSmall => std.builtin.Mode.ReleaseSmall,
+        .Debug => std.builtin.Mode.Debug,
+        .ReleaseSafe => std.builtin.Mode.ReleaseSafe,
+        .ReleaseFast => std.builtin.Mode.ReleaseFast,
+        .ReleaseSmall => std.builtin.Mode.ReleaseSmall,
     };
 
-    const build_target = b.option(TargetType, "Compile_Target", "The Build Target to use from @TargetType").?; // What Target are you building for, refer to @TargetType
-    const target = switch (build_target) { // Picks Linker Script to provide to consumer, and target details
-        TargetType.M0 => b.standardTargetOptions(.{}),
-        TargetType.M1 => b.standardTargetOptions(.{}),
-        TargetType.M2 => b.standardTargetOptions(.{}),
-        TargetType.M3 => b.standardTargetOptions(.{}),
-        TargetType.M4 => b.standardTargetOptions(.{}),
+    // Build Target
+    const TargetStr = b.option([]const u8, "Compile_Target", "The build target").?;
+    const TargetEnumVal = std.meta.stringToEnum(suptarget.Targets.TargetEnum, TargetStr) orelse {
+        std.debug.print("Received unknown optimization mode: {s}\n", .{TargetStr});
+        return error.UnknownOptimizationMode;
+    };
+    const TargetOption = switch (TargetEnumVal) {
+        .STM32F103, .STM32F407, .STM32F030, .STM32H743, .STM32F303, .STM32L476 => b.standardTargetOptions(
+            .{ .default_target = .{ .cpu_arch = .arm, .cpu_model = .determined_by_cpu_arch, .os_tag = .freestanding } },
+        ),
     };
 
-    const lib_type = b.option(LibraryType, "Library_Type", "The Type of Library to use from @LibraryType").?; // Shared or Static Library, refer to @Library-Type
+    // Library Type
+    const lib_type_str = b.option([]const u8, "Library_Type", "The type of library").?;
+    const lib_type = std.meta.stringToEnum(LibraryType, lib_type_str) orelse {
+        std.debug.print("Received unknown optimization mode: {s}\n", .{optimize_mode_str});
+        return error.UnknownOptimizationMode;
+    };
     const lib = switch (lib_type) {
-        LibraryType.Static => b.addStaticLibrary(.{
+        .Static => b.addStaticLibrary(.{
             .name = "A-RTOS-M",
-            .target = target,
+            .target = TargetOption,
             .optimize = optimize,
+            .root_source_file = .{ .cwd_relative = "src/helper.zig" },
             .link_libc = true,
         }),
-        LibraryType.Shared => b.addSharedLibrary(.{
+        .Shared => b.addSharedLibrary(.{
             .name = "A-RTOS-M",
-            .target = target,
+            .target = TargetOption,
             .optimize = optimize,
+            .root_source_file = .{ .cwd_relative = "src/helper.zig" },
             .link_libc = true,
         }),
     };
-    std.debug.print("Lib Type: {any} | OptimizeMode: {any} | Build Target: {any}\n", .{ lib_type, optimize, target });
 
     // Collect & Compile all source files (.c and .zig)
     var sources = std.ArrayList([]const u8).init(b.allocator); // Array to store all file addresses
@@ -75,7 +80,6 @@ pub fn build(b: *std.Build) !void {
         defer walker.deinit();
 
         const allowed_exts_c = [_][]const u8{".c"};
-        const allowed_exts_zig = [_][]const u8{".zig"};
         while (try walker.next()) |entry| {
             const ext = std.fs.path.extension(entry.basename);
 
@@ -86,14 +90,6 @@ pub fn build(b: *std.Build) !void {
             if (is_c_file) {
                 try sources.append(b.pathJoin(&[_][]const u8{ "src", entry.path }));
                 continue;
-            }
-
-            // Handle Zig files
-            const is_zig_file = for (allowed_exts_zig) |e| {
-                if (std.mem.eql(u8, ext, e)) break true;
-            } else false;
-            if (is_zig_file) {
-                lib.addSourceFile(b.pathJoin(&[_][]const u8{ "src", entry.path }));
             }
         }
     }

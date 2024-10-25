@@ -1,6 +1,4 @@
 // Credits to: https://github.com/the-argus/zig-compile-commands
-// I had to modify it and debug because it wasn't working for me, this is why this file is here:
-
 const std = @import("std");
 
 // here's the static memory!!!!
