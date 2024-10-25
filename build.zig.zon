@@ -4,7 +4,7 @@
     .minimum_zig_version = "0.13.0",
     .paths = .{
         "build.zig",
-        "compile_commands.zig",
+        "tools",
         "build.zig.zon",
         "inc",
         "src",

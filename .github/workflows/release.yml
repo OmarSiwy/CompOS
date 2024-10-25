@@ -25,7 +25,7 @@ jobs:
 
     - uses: goto-bus-stop/setup-zig@v2
       with:
-        version: master
+        version: "0.13.0"
     - name: Check zig version
       run: zig version
     - name: Build pkghash tool
