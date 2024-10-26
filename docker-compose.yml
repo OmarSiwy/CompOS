@@ -10,7 +10,7 @@ services:
   build-shared:
     build: .
     command: >
-      zig build -DLibrary_Type=Shared -DOptimization=ReleaseFast -DCompile_Target=M0
+      zig build -DLibrary_Type=Shared -DOptimization=ReleaseFast -DCompile_Target=testing
     volumes:
       - .:/app
     working_dir: /app
@@ -18,25 +18,15 @@ services:
   test:
     build: .
     command: >
-      zig test tests/All_test.zig -lc -lA-RTOS-M -I./inc -L./zig-out/lib/
+      zig build test -DLibrary_Type=Shared -DOptimization=ReleaseFast -DCompile_Target=testing
     volumes:
       - .:/app
     working_dir: /app
-    depends_on:
-      - build-shared
 
   cdb:
     build: .
     command: >
       zig build cdb -DLibrary_Type=Shared -DOptimization=ReleaseFast -DCompile_Target=M0 -freference-trace
-    volumes:
-      - .:/app
-    working_dir: /app
-
-  linker:
-    build: .
-    command: >
-      zig build-exe tools/LinkerGenerator.zig -O ReleaseFast -o generate_linker_script && ./generate_linker_script STM32F103 examples/Pic18f4550/linker.ld
     volumes:
       - .:/app
     working_dir: /app
