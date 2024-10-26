@@ -38,7 +38,5 @@
 // Works to comment as well
 
 extern int add(int a, int b);
-extern const unsigned int* get_precomputed_array();
-extern unsigned long get_struct_field_count();
 
 #endif

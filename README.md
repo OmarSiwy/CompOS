@@ -1,13 +1,25 @@
-### Event-Driven RTOS (Currently in heavy development)
+## A-RTOS-M
 
-### Learning:
+### Why A-RTOS-M?
 
-- [ ] Task Scheduling (Task Switching and Scheduling Algorithms)
-- [ ] Memory Management (Stacks and Heaps, dynamic memory allocation)
-- [ ] Interrupt Handling (Interrupt Service Routines)
-- [ ] Synchronization Primitives (Mutexes, Semaphores, and Event Flags)
+This RTOS variation uses priority and premptive scheduling to give you the lowest overhead on task switching, utilizing compile-time semantics from Zig, while still providing usage through C and Zig if you want.
 
-### Zig
+#### About Zig
+
+**Benefits**:
+
+- Compile Time semantics
+- In-House Testing using Zig Test
+- 0 runtime overhead interoperability with C
+- Compiler has more options than typical Clang with 0 runtime overhead
+
+**Limitations**:
+
+- Limited to Clang which isn't perfectly optimal for Embedded Development
+
+### To Use:
+
+#### Zig
 
 **Place the following inside you build.zig.zon:**
 
@@ -43,9 +55,19 @@ const exe = b.addExecutable(.{
 exe.linkLibrary(ARTOS.artifact("A_RTOS_M"));
 ```
 
-### C/C++
+#### C/C++
+
+**Conan**:
 
 ```Bash
 # Build from source:
 
 ```
+
+**Build from Source**:
+
+### Editing this Repo:
+
+#### Updating the Documentation Website:
+
+#### Re-Uploading for Conan

@@ -12,11 +12,13 @@ pub fn build(b: *std.Build) !void {
         .Library_Type = "Static",
     });
 
-    ARTOS.linker.generateLinker(target_name, output_path) catch {
+    // Generate the linker script
+    ARTOS.AddGeneratedLinker(target_name, output_path) catch {
         std.debug.print("Failed to generate linker script for target: {s}\n", .{target_name});
         return;
     };
 
+    // Create an executable with the generated linker script
     const exe = b.addExecutable(.{
         .name = "project",
         .target = target,
@@ -25,7 +27,16 @@ pub fn build(b: *std.Build) !void {
         .linkerscript = output_path,
     });
 
+    // Link the external library
     exe.linkLibrary(ARTOS.artifact("A_RTOS_M"));
-    exe.linkSystemLibrary("c");
-    exe.install(); // Installs .hex file to flash
+    exe.install(); // Installs the .hex file for flashing
+
+    // Generate compile commands for Intellisense
+    ARTOS.AddCompileCommandStep(b, exe);
+
+    // Emit all binary formats
+    ARTOS.EmitAll(b);
+
+    // Print ELF file size for reference
+    ARTOS.PrintSize(b);
 }

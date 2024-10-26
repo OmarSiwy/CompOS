@@ -31,6 +31,7 @@ pub const Targets = struct {
         STM32H743,
         STM32L476,
         STM32F303,
+        testing,
     };
 
     pub const STM32F103 = TargetType{
