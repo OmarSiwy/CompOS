@@ -1,31 +1,33 @@
-## A-RTOS-M
+## 🚀 **A-RTOS-M**
 
-### Why A-RTOS-M?
+### 🧐 **Why Choose A-RTOS-M?**
 
-This RTOS variation uses priority and premptive scheduling to give you the lowest overhead on task switching, utilizing compile-time semantics from Zig, while still providing usage through C and Zig if you want.
+A-RTOS-M brings priority-based, preemptive scheduling to your project, providing ultra-low task-switching overhead. Thanks to Zig's powerful compile-time semantics, you get the efficiency of Zig with seamless C interoperability. Enjoy a lightweight, powerful RTOS solution with an edge in embedded systems.
 
-#### About Zig
+#### 🌟 **About Zig**
 
 **Benefits**:
 
-- Compile Time semantics
-- In-House Testing using Zig Test
-- 0 runtime overhead interoperability with C
-- Compiler has more options than typical Clang with 0 runtime overhead
+- 🕒 **Compile-Time Semantics**: Powerful compile-time processing for optimized builds.
+- ✅ **In-House Testing**: Write and run tests directly within Zig, ensuring robustness.
+- 🔗 **C Interoperability**: Zero runtime overhead when calling Zig from C.
+- 🔧 **Advanced Compiler Options**: More configuration flexibility than Clang with no added runtime overhead.
 
 **Limitations**:
 
-- Limited to Clang which isn't perfectly optimal for Embedded Development
+- 🛠️ **Clang Dependency**: Relies on Clang, which is sometimes suboptimal for embedded development.
 
-### To Use:
+---
 
-#### Zig
+### 📖 **How to Use A-RTOS-M**
 
-**Place the following inside you build.zig.zon:**
+#### ⚡ **Zig**
 
-**build.zig.zon**:
+Add the following dependency to your `build.zig.zon` to integrate A-RTOS-M.
 
-```Zig
+📄 **build.zig.zon**:
+
+````zig
 .dependencies = .{
     .A_RTOS_M = .{
         .url = "https://github.com/OmarSiwy/A-RTOS-M/archive/refs/tags/v0.0.6.tar.gz",
@@ -33,9 +35,8 @@ This RTOS variation uses priority and premptive scheduling to give you the lowes
     },
 },
 
-```
 
-**build.zig:**
+📄 **build.zig:**
 
 ```Zig
 const ARTOS = b.dependency("A_RTOS_M", .{
@@ -55,17 +56,17 @@ const exe = b.addExecutable(.{
 exe.linkLibrary(ARTOS.artifact("A_RTOS_M"));
 ```
 
-#### C/C++
+#### ⚙️  C/C++
 
 **Conan**:
 
-Not Currently Supported due to the many versions
+Not Currently Supported due to multiple variations in setup; additional workflows are being explored.
 
 **Build from Source**:
 
 ```Bash
 # Option #1:
-# Have Zig V0.13 Installed:
+# Ensure Zig V0.13 is installed
 zig build -DCompile_Target=testing -DOptimization=ReleaseFast -DLibrary_Type=Static
 
 mv ./zig-out/lib/libA-RTOS-M.a <ProjectDir>
@@ -74,11 +75,4 @@ mv ./zig-out/lib/libA-RTOS-M.a <ProjectDir>
 docker compose up run build-static
 mv ./zig-out/lib/libA-RTOS-M.a <ProjectDir>
 ```
-
-### Editing this Repo:
-
-### Re-Uploading for Conan
-
-```Bash
-# Run tools/UploadConan.sh
-```
+````
