@@ -32,3 +32,17 @@ jobs:
 
       - name: Testing
         run: zig build test -DCompile_Target=testing -DOptimization=ReleaseFast -DLibrary_Type=Static
+
+      - name: Build pkghash tool
+        run: zig build pkghash -DCompile_Target=testing -DOptimization=ReleaseFast -DLibrary_Type=Static
+
+      - name: Create Release
+        id: create_release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # This token is provided by Actions
+        with:
+          tag_name: ${{ github.ref }}
+          release_name: Release ${{ steps.tag.outputs.version }} # Remove 'refs/tags/' from the tag name
+          body_path: relnotes.md
+          prerelease: true
