@@ -33,9 +33,6 @@ jobs:
       - name: Testing
         run: zig build test -DCompile_Target=testing -DOptimization=ReleaseFast -DLibrary_Type=Static
 
-      - name: Build pkghash tool
-        run: zig build pkghash -DCompile_Target=testing -DOptimization=ReleaseFast -DLibrary_Type=Static
-
       - name: Create Release
         id: create_release
         uses: actions/create-release@v1

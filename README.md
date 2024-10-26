@@ -59,15 +59,26 @@ exe.linkLibrary(ARTOS.artifact("A_RTOS_M"));
 
 **Conan**:
 
-```Bash
-# Build from source:
-
-```
+Not Currently Supported due to the many versions
 
 **Build from Source**:
 
+```Bash
+# Option #1:
+# Have Zig V0.13 Installed:
+zig build -DCompile_Target=testing -DOptimization=ReleaseFast -DLibrary_Type=Static
+
+mv ./zig-out/lib/libA-RTOS-M.a <ProjectDir>
+
+# Option #2:
+docker compose up run build-static
+mv ./zig-out/lib/libA-RTOS-M.a <ProjectDir>
+```
+
 ### Editing this Repo:
 
-#### Updating the Documentation Website:
+### Re-Uploading for Conan
 
-#### Re-Uploading for Conan
+```Bash
+# Run tools/UploadConan.sh
+```
