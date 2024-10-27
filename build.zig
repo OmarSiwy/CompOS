@@ -1,10 +1,4 @@
 const std = @import("std");
-/// Compile-Commands.Zig Generator
-const zcc = @import("tools/CompileCommands.zig");
-
-/// Linker-Script.Zig Generator
-const linker = @import("tools/LinkerGenerator.zig");
-
 /// Target Selection for Building
 const suptarget = @import("tools/SupportedTargets.zig");
 
@@ -21,6 +15,8 @@ const cflags = .{
 
 const OptimizeMode = enum { Debug, ReleaseSafe, ReleaseFast, ReleaseSmall };
 const LibraryType = enum { Static, Shared };
+
+const ARTOS = @This();
 
 pub fn build(b: *std.Build) !void {
     // Optimization Mode
@@ -153,11 +149,13 @@ pub fn build(b: *std.Build) !void {
     AddCompileCommandStep(b, lib);
 }
 
-pub inline fn AddGeneratedLinker(target: []const u8, output_path: []const u8) void {
+pub fn AddGeneratedLinker(target: []const u8, output_path: []const u8) void {
+    const linker = @import("tools/LinkerGenerator.zig");
     linker.generateLinker(target, output_path);
 }
 
 pub fn AddCompileCommandStep(b: *std.Build, lib: *std.Build.Step.Compile) void {
+    const zcc = @import("tools/CompileCommands.zig");
     var targets = std.ArrayList(*std.Build.Step.Compile).init(b.allocator);
     defer targets.deinit();
     targets.append(lib) catch @panic("OOM");

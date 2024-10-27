@@ -2,10 +2,7 @@
     .name = "examples/Pic18f4550",
     .version = "0.0.1",
     .dependencies = .{
-        .A_RTOS_M = .{
-            .url = "https://github.com/OmarSiwy/A-RTOS-M/archive/refs/tags/v0.1.2.tar.gz",
-            .hash = "12206cc38df5a25da72f1214c8e1bc019f3dbd5c0fd358b229de40dcb5f97abc770c",
-        },
+        .A_RTOS_M = .{ .path = "../../A-RTOS-M" },
     },
 
     .paths = .{
