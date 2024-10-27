@@ -2,7 +2,7 @@ services:
   build-static:
     build: .
     command: >
-      zig build -DLibrary_Type=Static -DOptimization=ReleaseFast -DCompile_Target=M0
+      zig build size_check -DLibrary_Type=Static -DOptimization=ReleaseSmall -DCompile_Target=STM32F407
     volumes:
       - .:/app
     working_dir: /app
@@ -10,7 +10,7 @@ services:
   build-shared:
     build: .
     command: >
-      zig build -DLibrary_Type=Shared -DOptimization=ReleaseFast -DCompile_Target=testing
+      zig build size_check -DLibrary_Type=Shared -DOptimization=ReleaseFast -DCompile_Target=testing
     volumes:
       - .:/app
     working_dir: /app

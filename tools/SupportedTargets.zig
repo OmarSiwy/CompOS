@@ -20,6 +20,7 @@ pub const TargetType = struct {
     mcu_sub_family: []const u8,
     memory_regions: []const MemoryRegion,
     memory_alignment: u32,
+    cpu_model: *const std.Target.Cpu.Model,
 };
 
 /// Supported Targets
@@ -44,6 +45,7 @@ pub const Targets = struct {
             MemoryRegion{ .kind = .ram, .offset = 0x20000000, .length = 0x00005000 }, // 20KB RAM
         },
         .memory_alignment = 8, // 8-byte alignment
+        .cpu_model = &std.Target.arm.cpu.cortex_m3,
     };
 
     pub const STM32F407 = TargetType{
@@ -56,6 +58,7 @@ pub const Targets = struct {
             MemoryRegion{ .kind = .ram, .offset = 0x20000000, .length = 0x00020000 }, // 128KB RAM
         },
         .memory_alignment = 16, // 16-byte alignment
+        .cpu_model = &std.Target.arm.cpu.cortex_m4,
     };
 
     pub const STM32F030 = TargetType{
@@ -68,6 +71,7 @@ pub const Targets = struct {
             MemoryRegion{ .kind = .ram, .offset = 0x20000000, .length = 0x00000800 }, // 8KB RAM
         },
         .memory_alignment = 4, // 4-byte alignment
+        .cpu_model = &std.Target.arm.cpu.cortex_m0,
     };
 
     pub const STM32H743 = TargetType{
@@ -80,6 +84,7 @@ pub const Targets = struct {
             MemoryRegion{ .kind = .ram, .offset = 0x24000000, .length = 0x00080000 }, // 512KB RAM
         },
         .memory_alignment = 32, // 32-byte alignment for high-performance MCU
+        .cpu_model = &std.Target.arm.cpu.cortex_m7,
     };
 
     pub const STM32L476 = TargetType{
@@ -92,6 +97,7 @@ pub const Targets = struct {
             MemoryRegion{ .kind = .ram, .offset = 0x20000000, .length = 0x00018000 }, // 96KB RAM
         },
         .memory_alignment = 8, // 8-byte alignment
+        .cpu_model = &std.Target.arm.cpu.cortex_m4,
     };
 
     pub const STM32F303 = TargetType{
@@ -104,5 +110,18 @@ pub const Targets = struct {
             MemoryRegion{ .kind = .ram, .offset = 0x20000000, .length = 0x00010000 }, // 64KB RAM
         },
         .memory_alignment = 8, // 8-byte alignment
+        .cpu_model = &std.Target.arm.cpu.cortex_m4,
     };
 };
+
+pub fn SelectTarget(target: Targets.TargetEnum) ?*const TargetType {
+    return switch (target) {
+        .STM32F103 => &Targets.STM32F103,
+        .STM32F407 => &Targets.STM32F407,
+        .STM32F030 => &Targets.STM32F030,
+        .STM32H743 => &Targets.STM32H743,
+        .STM32L476 => &Targets.STM32L476,
+        .STM32F303 => &Targets.STM32F303,
+        .testing => null, // or replace with a test target if desired
+    };
+}

@@ -9,11 +9,6 @@
  * @param condition The condition to check, if true then the error message is printed and the program exits
  * @param error_message The error message to print
  */
-#define assert(condition, error_message) \
-    if (condition) { \
-        fprintf(stderr, "Error: %s\n", error_message); \
-        exit(1); \
-    }
 
 /******************************************************************************
  * A brief history of JavaDoc-style (C-style) banner comments.
@@ -36,7 +31,5 @@
  ******************************************************************************/
 
 // Works to comment as well
-
-extern int add(int a, int b);
 
 #endif

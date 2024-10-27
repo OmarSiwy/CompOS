@@ -1,8 +1,6 @@
 const std = @import("std");
-
-/// Exposed Libraries to the user
 /// Compile-Commands.Zig Generator
-const zcc = @import("tools/Compile_commands.zig");
+const zcc = @import("tools/CompileCommands.zig");
 
 /// Linker-Script.Zig Generator
 const linker = @import("tools/LinkerGenerator.zig");
@@ -17,6 +15,8 @@ const cflags = .{
     "-g",
     "-O2",
     "-ffast-math",
+    "-ffunction-sections",
+    "-fdata-sections",
 };
 
 const OptimizeMode = enum { Debug, ReleaseSafe, ReleaseFast, ReleaseSmall };
@@ -42,12 +42,25 @@ pub fn build(b: *std.Build) !void {
         std.debug.print("Received unknown target: {s}\n", .{TargetStr});
         return error.UnknownTarget;
     };
-    const TargetOption = switch (TargetEnumVal) {
-        .STM32F103, .STM32F407, .STM32F030, .STM32H743, .STM32F303, .STM32L476 => b.standardTargetOptions(
-            .{ .default_target = .{ .cpu_arch = .arm, .cpu_model = .determined_by_cpu_arch, .os_tag = .freestanding } },
-        ),
-        else => b.standardTargetOptions(.{}), // Testing
-    };
+    const selected_target = suptarget.SelectTarget(TargetEnumVal);
+
+    var TargetOption: std.Build.ResolvedTarget = undefined; // Declare `TargetOption` with the appropriate type
+
+    if (selected_target) |target| {
+        TargetOption = switch (TargetEnumVal) {
+            .STM32F103, .STM32F407, .STM32F030, .STM32H743, .STM32F303, .STM32L476 => b.standardTargetOptions(.{
+                .default_target = .{
+                    .cpu_arch = .thumb,
+                    .cpu_model = .{ .explicit = target.cpu_model },
+                    .os_tag = .freestanding,
+                    .abi = .none,
+                },
+            }),
+            else => b.standardTargetOptions(.{}),
+        };
+    } else {
+        TargetOption = b.standardTargetOptions(.{});
+    }
 
     // Library Type
     const lib_type_str = b.option([]const u8, "Library_Type", "The type of library").?;
@@ -63,12 +76,14 @@ pub fn build(b: *std.Build) !void {
             .root_source_file = .{ .cwd_relative = "src/ZigAPI.zig" },
             .optimize = optimize,
             .target = TargetOption,
+            .strip = true,
         }),
         .Shared => b.addSharedLibrary(.{
             .name = "helper",
             .root_source_file = .{ .cwd_relative = "src/ZigAPI.zig" },
             .optimize = optimize,
             .target = TargetOption,
+            .strip = true,
         }),
     };
     const lib = switch (lib_type) {
@@ -77,15 +92,18 @@ pub fn build(b: *std.Build) !void {
             .target = TargetOption,
             .optimize = optimize,
             .link_libc = true,
+            .strip = true,
         }),
         .Shared => b.addSharedLibrary(.{
             .name = "A-RTOS-M",
             .target = TargetOption,
             .optimize = optimize,
             .link_libc = true,
+            .strip = true,
         }),
     };
     lib.linkLibrary(zig_part_of_lib);
+    lib.dead_strip_dylibs = true;
 
     // Collect & Compile source files (.c and .zig)
     var sources = std.ArrayList([]const u8).init(b.allocator);
@@ -108,7 +126,6 @@ pub fn build(b: *std.Build) !void {
     }
 
     const source_slice = try sources.toOwnedSlice();
-    std.debug.print("Source files: {s}\n", .{source_slice});
 
     lib.addCSourceFiles(.{
         .files = source_slice,
@@ -127,23 +144,16 @@ pub fn build(b: *std.Build) !void {
 
     const test_step = b.step("test", "Run library tests");
     test_step.dependOn(&main_tests.step);
-
     main_tests.root_module.addIncludePath(.{ .cwd_relative = "inc" });
     main_tests.linkLibrary(lib);
-
     const run_unit_tests = b.addRunArtifact(main_tests);
     test_step.dependOn(&run_unit_tests.step);
 
     // Compile Commands for Intellisense
-    var targets = std.ArrayList(*std.Build.Step.Compile).init(b.allocator);
-    defer targets.deinit();
-    targets.append(lib) catch @panic("OOM");
-    zcc.createStep(b, "cdb", targets.toOwnedSlice() catch @panic("OOM"));
+    AddCompileCommandStep(b, lib);
 }
 
-// Exposed Functions
-
-pub fn AddGeneratedLinker(target: []const u8, output_path: []const u8) void {
+pub inline fn AddGeneratedLinker(target: []const u8, output_path: []const u8) void {
     linker.generateLinker(target, output_path);
 }
 
@@ -152,31 +162,4 @@ pub fn AddCompileCommandStep(b: *std.Build, lib: *std.Build.Step.Compile) void {
     defer targets.deinit();
     targets.append(lib) catch @panic("OOM");
     zcc.createStep(b, "cdb", targets.toOwnedSlice() catch @panic("OOM"));
-}
-
-pub fn EmitElf(b: *std.Build) void {
-    const elf_file = b.getInstallStep().getEmittedBin(.elf);
-    std.debug.print("Generated ELF file at: {s}\n", .{elf_file.path});
-}
-
-pub fn EmitBin(b: *std.Build) void {
-    const bin_file = b.getInstallStep().getEmittedBin(.bin);
-    std.debug.print("Generated Binary file at: {s}\n", .{bin_file.path});
-}
-
-pub fn EmitHex(b: *std.Build) void {
-    const hex_file = b.getInstallStep().getEmittedBin(.hex);
-    std.debug.print("Generated HEX file at: {s}\n", .{hex_file.path});
-}
-
-pub fn EmitAll(b: *std.Build) void {
-    EmitElf(b);
-    EmitBin(b);
-    EmitHex(b);
-}
-
-pub fn PrintSize(b: *std.Build) void {
-    const elf_file = b.getInstallStep().getEmittedBin(.elf);
-    const file_info = try b.filesystem.getFileSize(elf_file);
-    std.debug.print("ELF File Size: {d} bytes\n", .{file_info.size});
 }
