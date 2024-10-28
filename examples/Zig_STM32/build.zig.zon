@@ -1,8 +1,8 @@
 .{
-    .name = "examples/Pic18f4550",
+    .name = "examples/STM32F401",
     .version = "0.0.1",
     .dependencies = .{
-        .A_RTOS_M = .{ .path = "../../A-RTOS-M" },
+        .CompOS = .{ .path = "../../../CompOS" },
     },
 
     .paths = .{
@@ -10,6 +10,5 @@
         "build.zig",
         "build.zig.zon",
         "src",
-        "tools",
     },
 }

@@ -3,6 +3,8 @@
 #ifndef ERROR_HANDLER_H_
 #define ERROR_HANDLER_H_
 
+#include <stdint.h>
+
 /**
  * @brief Function to handle errors during run_time, prints the error message and exits the program
  *
@@ -31,5 +33,6 @@
  ******************************************************************************/
 
 // Works to comment as well
+extern uint32_t display(uint32_t n);
 
 #endif

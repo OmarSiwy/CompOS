@@ -97,12 +97,3 @@ pub fn GenerateLinkerFile(target: Targets.TargetType, output_path: []const u8, e
         \\ ASSERT(SIZEOF(.bss) < LENGTH(ram0), \"RAM overflow\");
     );
 }
-
-/// Entry point to the Zig program, responsible for generating the linker script.
-pub fn generateLinker(target: []const u8, output_path: []const u8) !void {
-    const selected_target = Targets.selectTarget(target) orelse return std.debug.print("Target not found: {s}\n", .{target});
-
-    // Generate linker script for the selected target
-    try GenerateLinkerFile(selected_target, output_path, "main");
-    std.debug.print("Linker script generated at: {s}\n", .{output_path});
-}

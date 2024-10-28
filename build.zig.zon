@@ -1,16 +1,18 @@
 .{
-    .name = "A-RTOS-M",
+    .name = "CompOS",
     .version = "0.0.1",
     .minimum_zig_version = "0.13.0",
+    .dependencies = .{
+        .build = .{ .path = "build" },
+    },
     .paths = .{
         "build.zig",
-        "tools",
         "build.zig.zon",
         "inc",
         "src",
         "tests",
+        "docs",
         "README.md",
         "LICENSE",
     },
-    .dependencies = .{},
 }
