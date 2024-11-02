@@ -16,14 +16,15 @@ jobs:
       CONAN_USERNAME: "omarsiwy"
       CONAN_CHANNEL: "stable"
       CONAN_REMOTE_NAME: "github"
-      CONAN_REMOTE_URL: "https://conan.pkg.github.com/${{ github.repository_owner }}"
-      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      CONAN_REMOTE_URL: "https://conan.pkg.github.com/OmarSiwy"
+      CONAN_LOGIN_USERNAME: "omarsiwy"
+      CONAN_PASSWORD: ${{ secrets.CONAN_PASSWORD }}
 
     steps:
       - name: Checkout source
         uses: actions/checkout@v3
 
-      - name: Set up Python and Install Conan
+      - name: Set up Python
         uses: actions/setup-python@v4
         with:
           python-version: "3.8"
@@ -32,9 +33,10 @@ jobs:
         run: |
           pip install conan==2.0.4
 
-      - name: Set up Conan remote and authentication for GitHub Packages
+      - name: Configure Conan for GitHub Packages
         run: |
           conan remote add $CONAN_REMOTE_NAME $CONAN_REMOTE_URL --force
+          # Authentication is handled via environment variables in Conan 2.x
 
       - name: Export Conan Recipe
         run: |
@@ -43,4 +45,4 @@ jobs:
       - name: Upload Conan Recipe to GitHub Packages
         if: startsWith(github.ref, 'refs/tags')
         run: |
-          conan upload "${PACKAGE_NAME}/${PACKAGE_VERSION}@${CONAN_USERNAME}/${CONAN_CHANNEL}" -r $CONAN_REMOTE_NAME --confirm
+          conan upload "${PACKAGE_NAME}/${PACKAGE_VERSION}@${CONAN_USERNAME}/${CONAN_CHANNEL}" -r $CONAN_REMOTE_NAME --confirm --only-recipe
