@@ -14,7 +14,7 @@ jobs:
       PACKAGE_NAME: "compos"
       PACKAGE_VERSION: "1.0.0"
       CONAN_USERNAME: "OmarSiwy"
-      CONAN_CHANNEL: "stable" 
+      CONAN_CHANNEL: "stable"
       CONAN_REMOTE_NAME: "github"
       CONAN_REMOTE_URL: "https://conan.pkg.github.com/${{ github.repository_owner }}"
       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -23,15 +23,14 @@ jobs:
       - name: Checkout source
         uses: actions/checkout@v3
 
-      - name: Install Python and Conan
-        uses: conda-incubator/setup-miniconda@v2
+      - name: Set up Python and Install Conan
+        uses: actions/setup-python@v4
         with:
-          auto-update-conda: false
           python-version: "3.8"
 
       - name: Install Conan
         run: |
-          conda install -y conan=2.0.4
+          pip install conan==2.0.4
 
       - name: Set up Conan remote and authentication for GitHub Packages
         run: |
