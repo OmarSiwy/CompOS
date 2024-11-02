@@ -43,4 +43,4 @@ jobs:
       - name: Upload Conan Recipe to GitHub Packages
         if: startsWith(github.ref, 'refs/tags')
         run: |
-          conan upload "${PACKAGE_NAME}/${PACKAGE_VERSION}@${CONAN_USERNAME}/${CONAN_CHANNEL}" --all -r $CONAN_REMOTE_NAME --confirm
+          conan upload "${PACKAGE_NAME}/${PACKAGE_VERSION}@${CONAN_USERNAME}/${CONAN_CHANNEL}" -r $CONAN_REMOTE_NAME --confirm
