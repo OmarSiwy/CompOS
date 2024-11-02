@@ -38,7 +38,7 @@ jobs:
 
       - name: Export Conan Recipe
         run: |
-          conan export . "${PACKAGE_NAME}/${PACKAGE_VERSION}@${CONAN_USERNAME}/${CONAN_CHANNEL}"
+          conan export . --name=$PACKAGE_NAME --version=$PACKAGE_VERSION --user=$CONAN_USERNAME --channel=$CONAN_CHANNEL
 
       - name: Upload Conan Recipe to GitHub Packages
         if: startsWith(github.ref, 'refs/tags')
