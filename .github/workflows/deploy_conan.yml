@@ -13,7 +13,7 @@ jobs:
     env:
       PACKAGE_NAME: "compos"
       PACKAGE_VERSION: "1.0.0"
-      CONAN_USERNAME: "OmarSiwy"
+      CONAN_USERNAME: "omarsiwy"
       CONAN_CHANNEL: "stable"
       CONAN_REMOTE_NAME: "github"
       CONAN_REMOTE_URL: "https://conan.pkg.github.com/${{ github.repository_owner }}"
