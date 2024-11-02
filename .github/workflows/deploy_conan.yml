@@ -35,7 +35,6 @@ jobs:
       - name: Set up Conan remote and authentication for GitHub Packages
         run: |
           conan remote add $CONAN_REMOTE_NAME $CONAN_REMOTE_URL --force
-          conan user -p $GITHUB_TOKEN -r $CONAN_REMOTE_NAME $CONAN_USERNAME
 
       - name: Export Conan Recipe
         run: |
