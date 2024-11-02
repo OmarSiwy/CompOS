@@ -33,6 +33,6 @@
  ******************************************************************************/
 
 // Works to comment as well
-extern uint32_t display(uint32_t n);
+extern uint32_t display(uint32_t n)
 
 #endif

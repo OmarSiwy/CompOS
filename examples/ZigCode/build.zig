@@ -8,7 +8,7 @@ pub fn build(b: *std.Build) !void {
         .target = "STM32F103",
         .lib_type = "Static",
     });
-    _ = lib;
+    b.installArtifact(lib);
 
     const target_name: []const u8 = "STM32F103";
     const output_path = "STM32F103_linker.ld";
@@ -20,9 +20,13 @@ pub fn build(b: *std.Build) !void {
         .root_source_file = b.path("src/main.zig"),
         .target = OSBuilder.GetTarget(),
         .optimize = OSBuilder.GetOptimize(),
+        .strip = true,
+        .unwind_tables = false,
+        .error_tracing = false,
+        .single_threaded = true,
+        .omit_frame_pointer = true,
     });
     exe.setLinkerScript(b.path(output_path));
-    b.install_path = "install";
     b.installArtifact(exe);
 
     // Generate binary output

@@ -28,7 +28,7 @@ jobs:
           version: 0.13.0
 
       - name: Build
-        run: zig build -DCompile_Target=testing -DOptimization=ReleaseFast -DLibrary_Type=Static
+        run: zig build -DCompile_Target=testing -Doptimize=ReleaseFast -DLibrary_Type=Static
 
       - name: Testing
-        run: zig build test -DCompile_Target=testing -DOptimization=ReleaseFast -DLibrary_Type=Static
+        run: zig build -DCompile_Target=testing -Doptimize=ReleaseFast -DLibrary_Type=Static test

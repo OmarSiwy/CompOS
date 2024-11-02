@@ -96,7 +96,6 @@ pub fn init(b: *std.Build, options: InitOptions) !*std.Build.Step.Compile {
         .flags = &cflags,
     });
     lib.addIncludePath(.{ .cwd_relative = build_root ++ "/../inc" });
-    b.installArtifact(lib);
 
     library = lib;
     return lib;
