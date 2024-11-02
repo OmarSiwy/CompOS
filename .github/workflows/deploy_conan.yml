@@ -29,15 +29,9 @@ jobs:
           auto-update-conda: false
           python-version: "3.8"
 
-      - name: Configure Conda
-        run: |
-          conda config --set auto_activate_base false
-          conda init
-          conda activate base
-      
       - name: Install Conan
         run: |
-          pip install conan==2.0.4
+          conda install -y conan=2.0.4
 
       - name: Set up Conan remote and authentication for GitHub Packages
         run: |
