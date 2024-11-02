@@ -17,7 +17,7 @@ jobs:
       CONAN_CHANNEL: "stable"
       CONAN_REMOTE_NAME: "github"
       CONAN_REMOTE_URL: "https://conan.pkg.github.com/OmarSiwy"
-      CONAN_LOGIN_USERNAME: "omarsiwy"
+      CONAN_LOGIN_USERNAME: "OmarSiwy"
       CONAN_PASSWORD: ${{ secrets.CONAN_PASSWORD }}
 
     steps:
