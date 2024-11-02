@@ -115,15 +115,20 @@ pub const Targets = struct {
 };
 
 /// SelectTarget function with error handling
-pub fn SelectTarget(TargetStr: []const u8) !*const TargetType {
-    const TargetEnumVal = std.meta.stringToEnum(Targets.TargetEnum, TargetStr) orelse return error.UnknownTarget;
-    return switch (TargetEnumVal) {
+pub fn SelectTarget(TargetStr: []const u8) ?*const TargetType {
+    const TargetEnumVal = std.meta.stringToEnum(Targets.TargetEnum, TargetStr);
+    if (TargetEnumVal == null) {
+        std.debug.print("Error: Unknown target '{s}'\n", .{TargetStr});
+        return null;
+    }
+    const target_enum = TargetEnumVal.?;
+    return switch (target_enum) {
         .STM32F103 => &Targets.STM32F103,
         .STM32F407 => &Targets.STM32F407,
         .STM32F030 => &Targets.STM32F030,
         .STM32H743 => &Targets.STM32H743,
         .STM32L476 => &Targets.STM32L476,
         .STM32F303 => &Targets.STM32F303,
-        .testing => return error.UnknownTarget, // Handle `.testing` case as an error
+        .testing => return null,
     };
 }

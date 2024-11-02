@@ -18,16 +18,53 @@ pub fn GenerateLinkerFile(target: Targets.TargetType, output_path: []const u8, e
     // Write MEMORY section
     try writer.writeAll("MEMORY\n{\n");
 
-    for (target.memory_regions, 0..) |region, i| {
+    // Define counters for each region type
+    var flash_counter: u32 = 0;
+    var ram_counter: u32 = 0;
+    var io_counter: u32 = 0;
+    var reserved_counter: u32 = 0;
+    var private_counter: u32 = 0;
+
+    for (target.memory_regions) |region| {
+        // Determine the region name and index based on the type
+        var region_index: u32 = 0;
         const region_name: []const u8 = switch (region.kind) {
-            .flash => "flash",
-            .ram => "ram",
-            .io => "io",
-            .reserved => "reserved",
-            .private => region.name,
+            .flash => blk: {
+                region_index = flash_counter;
+                flash_counter += 1;
+                break :blk "flash";
+            },
+            .ram => blk: {
+                region_index = ram_counter;
+                ram_counter += 1;
+                break :blk "ram";
+            },
+            .io => blk: {
+                region_index = io_counter;
+                io_counter += 1;
+                break :blk "io";
+            },
+            .reserved => blk: {
+                region_index = reserved_counter;
+                reserved_counter += 1;
+                break :blk "reserved";
+            },
+            .private => blk: {
+                region_index = private_counter;
+                private_counter += 1;
+                break :blk region.name;
+            },
         };
 
-        try writer.print("  {s}{d} ({s}{s}{s}) : ORIGIN = 0x{x:08}, LENGTH = 0x{x:08}\n", .{ region_name, i, if (region.readable) "r" else "", if (region.writeable) "w" else "", if (region.executable) "x" else "!", region.offset, region.length });
+        try writer.print("  {s}{d} ({s}{s}{s}) : ORIGIN = 0x{x:0>8}, LENGTH = 0x{x:0>8}\n", .{
+            region_name,
+            region_index,
+            if (region.readable) "r" else "",
+            if (region.writeable) "w" else "",
+            if (region.executable) "x" else "!",
+            region.offset,
+            region.length,
+        });
     }
 
     try writer.writeAll("}\n\n");
@@ -38,7 +75,7 @@ pub fn GenerateLinkerFile(target: Targets.TargetType, output_path: []const u8, e
     // Write SECTIONS part of the linker script
     try writer.writeAll(
         \\
-        \\ SECTIONS\n{
+        \\ SECTIONS{
         \\  .isr_vector :
         \\  {
         \\     KEEP(*(.isr_vector))
@@ -53,20 +90,19 @@ pub fn GenerateLinkerFile(target: Targets.TargetType, output_path: []const u8, e
         \\    *(.text*)
         \\  } > flash0
         \\ 
-        \\ .data : AT > flash0 ALIGN(
+        \\ .data :
     );
-    try writer.print("{d}\n", .{alignment});
     try writer.writeAll(
         \\  {
         \\    _data_start = .;
         \\    *(.data*)
         \\    *(.rodata)
         \\    _data_end = .;
-        \\  } > ram0
+        \\  } > ram0 AT> flash0
         \\ 
         \\  .bss (NOLOAD) : ALIGN(
     );
-    try writer.print("{d}\n", .{alignment});
+    try writer.print("{d})\n", .{alignment});
     try writer.writeAll(
         \\  {
         \\    _bss_start = .;
@@ -93,7 +129,7 @@ pub fn GenerateLinkerFile(target: Targets.TargetType, output_path: []const u8, e
 
     // Add memory overflow assertions
     try writer.writeAll(
-        \\ ASSERT(SIZEOF(.text) + SIZEOF(.data) < LENGTH(flash0), \"Flash memory overflow\");
-        \\ ASSERT(SIZEOF(.bss) < LENGTH(ram0), \"RAM overflow\");
+        \\ ASSERT(SIZEOF(.text) + SIZEOF(.data) < LENGTH(flash0), "Flash memory overflow");
+        \\ ASSERT(SIZEOF(.bss) < LENGTH(ram0), "RAM overflow");
     );
 }

@@ -1,12 +1,12 @@
 ENTRY("_start");
 MEMORY
 {
-  flash0 (rw!) : ORIGIN = 0x 8000000, LENGTH = 0x   40000
-  ram1 (rw!) : ORIGIN = 0x20000000, LENGTH = 0x    5000
+  flash0 (rw!) : ORIGIN = 0x08000000, LENGTH = 0x00040000
+  ram0 (rw!) : ORIGIN = 0x20000000, LENGTH = 0x00005000
 }
 
 
- SECTIONS\n{
+ SECTIONS{
   .isr_vector :
   {
      KEEP(*(.isr_vector))
@@ -18,15 +18,14 @@ MEMORY
     *(.text*)
   } > flash0
  
- .data : AT > flash0 ALIGN(8
-  {
+ .data :  {
     _data_start = .;
     *(.data*)
     *(.rodata)
     _data_end = .;
-  } > ram0
+  } > ram0 AT> flash0
  
-  .bss (NOLOAD) : ALIGN(8
+  .bss (NOLOAD) : ALIGN(8)
   {
     _bss_start = .;
     *(.bss*)
@@ -47,5 +46,5 @@ MEMORY
      . = . + 0x4000; /* Example 16KB heap */
      _heap_end = .;
   } > ram0
- } ASSERT(SIZEOF(.text) + SIZEOF(.data) < LENGTH(flash0), \"Flash memory overflow\");
- ASSERT(SIZEOF(.bss) < LENGTH(ram0), \"RAM overflow\");
+ } ASSERT(SIZEOF(.text) + SIZEOF(.data) < LENGTH(flash0), "Flash memory overflow");
+ ASSERT(SIZEOF(.bss) < LENGTH(ram0), "RAM overflow");

@@ -1,5 +1,5 @@
 .{
-    .name = "examples/STM32F401",
+    .name = "STM32F401",
     .version = "0.0.1",
     .dependencies = .{
         .CompOS = .{ .path = "../../../CompOS" },
