@@ -36,7 +36,6 @@ jobs:
       - name: Configure Conan for GitHub Packages
         run: |
           conan remote add $CONAN_REMOTE_NAME $CONAN_REMOTE_URL --force
-          # Authentication is handled via environment variables in Conan 2.x
 
       - name: Export Conan Recipe
         run: |
