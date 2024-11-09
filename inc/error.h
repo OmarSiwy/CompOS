@@ -6,9 +6,11 @@
 #include <stdint.h>
 
 /**
- * @brief Function to handle errors during run_time, prints the error message and exits the program
+ * @brief Function to handle errors during run_time, prints the error message
+ * and exits the program
  *
- * @param condition The condition to check, if true then the error message is printed and the program exits
+ * @param condition The condition to check, if true then the error message is
+ * printed and the program exits
  * @param error_message The error message to print
  */
 
