@@ -1,27 +1,20 @@
 ## 🚀 **A-RTOS-M**
 
-### 🧐 **Why Choose A-RTOS-M?**
+### **Why Choose A-RTOS-M?**
 
 A-RTOS-M brings priority-based, preemptive scheduling to your project, providing ultra-low task-switching overhead. Thanks to Zig's powerful compile-time semantics, you get the efficiency of Zig with seamless C interoperability. Enjoy a lightweight, powerful RTOS solution with an edge in embedded systems.
 
-#### 🌟 **About Zig**
+#### **About Zig**
 
 **Benefits**:
 
-- 🕒 **Compile-Time Semantics**: Powerful compile-time processing for optimized builds.
-- ✅ **In-House Testing**: Write and run tests directly within Zig, ensuring robustness.
-- 🔗 **C Interoperability**: Zero runtime overhead when calling Zig from C.
-- 🔧 **Advanced Compiler Options**: More configuration flexibility than Clang with no added runtime overhead.
-
 **Limitations**:
-
-- 🛠️ **Clang Dependency**: Relies on Clang, which is sometimes suboptimal for embedded development.
 
 ---
 
-### 📖 **How to Use A-RTOS-M**
+### **How to Use A-RTOS-M**
 
-#### ⚡ **Zig**
+#### **Zig**
 
 Add the following dependency to your `build.zig.zon` to integrate A-RTOS-M.
 
@@ -56,23 +49,8 @@ const exe = b.addExecutable(.{
 exe.linkLibrary(ARTOS.artifact("A_RTOS_M"));
 ```
 
-#### ⚙️  C/C++
+#### C/C++
 
-**Conan**:
+### Resources Used:
 
-Not Currently Supported due to multiple variations in setup; additional workflows are being explored.
-
-**Build from Source**:
-
-```Bash
-# Option #1:
-# Ensure Zig V0.13 is installed
-zig build -DCompile_Target=testing -DOptimization=ReleaseFast -DLibrary_Type=Static
-
-mv ./zig-out/lib/libA-RTOS-M.a <ProjectDir>
-
-# Option #2:
-docker compose up run build-static
-mv ./zig-out/lib/libA-RTOS-M.a <ProjectDir>
-```
-````
+~[Operating System: Three Easy Pieces](/assets/book-cover-two.jpg)

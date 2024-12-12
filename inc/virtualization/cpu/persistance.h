@@ -1,0 +1,4 @@
+#ifndef COMPOS_PERSISTANCE_H_
+#define COMPOS_PERSISTANCE_H_
+
+#endif
