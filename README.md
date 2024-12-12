@@ -1,38 +1,49 @@
-## 🚀 **A-RTOS-M**
+# 🚀 **CompOS**
 
-### **Why Choose A-RTOS-M?**
-
-A-RTOS-M brings priority-based, preemptive scheduling to your project, providing ultra-low task-switching overhead. Thanks to Zig's powerful compile-time semantics, you get the efficiency of Zig with seamless C interoperability. Enjoy a lightweight, powerful RTOS solution with an edge in embedded systems.
-
-#### **About Zig**
-
-**Benefits**:
-
-**Limitations**:
+**Zero-task allocation overhead and ultra-low context-switching scheduling for your projects.**
 
 ---
 
-### **How to Use A-RTOS-M**
+## **Why Choose CompOS?**
 
-#### **Zig**
+CompOS introduces **zero-task allocation overhead** and **context-switching based scheduling**, delivering ultra-low task-switching overhead. Leveraging **Zig's powerful compile-time semantics** and seamless **compatibility with Clang**, CompOS integrates effortlessly into Zig-based and C/C++ projects.
 
-Add the following dependency to your `build.zig.zon` to integrate A-RTOS-M.
+---
+
+## **About Zig**
+
+### **Benefits**:
+- **Compile-time power**: Zig enables highly optimized code using its compile-time evaluation and metaprogramming capabilities.
+- **Safety features**: Built-in safety checks help eliminate common programming errors.
+- **Performance**: Zig focuses on minimal overhead, making it ideal for real-time systems.
+
+### **Limitations**:
+- Zig's ecosystem is still growing, and some tools or libraries may not yet be available.
+- Requires familiarity with Zig and its unique features for optimal use.
+
+---
+
+## **How to Use CompOS**
+
+### **Using with Zig**
+
+Add the following dependency to your `build.zig.zon` to integrate CompOS into your project:
 
 📄 **build.zig.zon**:
 
-````zig
+```zig
 .dependencies = .{
-    .A_RTOS_M = .{
-        .url = "https://github.com/OmarSiwy/A-RTOS-M/archive/refs/tags/v0.0.6.tar.gz",
+    .CompOS = .{
+        .url = "https://github.com/OmarSiwy/CompOS/archive/refs/tags/v0.0.6.tar.gz",
         .hash = "12206cc38df5a25da72f1214c8e1bc019f3dbd5c0fd358b229de40dcb5f97abc770c",
     },
 },
+```
 
+📄 **build.zig**:
 
-📄 **build.zig:**
-
-```Zig
-const ARTOS = b.dependency("A_RTOS_M", .{
+```zig
+const ARTOS = b.dependency("CompOS", .{
     .Compile_Target = "<MCU_NAME>",
     .Optimization = "ReleaseSafe or Debug or ReleaseSmall or ...",
     .Library_Type = "Static or Shared",
@@ -46,11 +57,51 @@ const exe = b.addExecutable(.{
     .root_source_file = .{ .cwd_relative = "src/main.zig" },
     .linkerscript = output_path,
 });
-exe.linkLibrary(ARTOS.artifact("A_RTOS_M"));
+exe.linkLibrary(ARTOS.artifact("CompOS"));
 ```
 
-#### C/C++
+### **Using with C/C++**
 
-### Resources Used:
+To build and use CompOS with C/C++:
 
-~[Operating System: Three Easy Pieces](/assets/book-cover-two.jpg)
+```bash
+zig build -Doptimize=ReleaseSafe -DCompile_Target=testing -DLibrary_Type=Static
+
+# Use the generated library and source files with your makefile (see examples for details).
+```
+
+---
+
+## **Development**
+
+### **Testing**
+
+Run tests with the following command:
+
+```bash
+zig build test -Doptimize=ReleaseSafe -DCompile_Target=testing -DLibrary_Type=Static
+```
+
+### **Building IntelliSense**
+
+Generate a compilation database for IntelliSense:
+
+```bash
+zig build cdb -Doptimize=ReleaseSafe -DCompile_Target=testing -DLibrary_Type=Static
+```
+
+### **Building for Your Project**
+
+To build CompOS for your project:
+
+```bash
+zig build -Doptimize=ReleaseSafe -DCompile_Target=testing -DLibrary_Type=Static
+```
+
+---
+
+## **Resources**
+
+- **[Operating System: Three Easy Pieces](https://assets/book-cover-two.jpg)**
+
+---
