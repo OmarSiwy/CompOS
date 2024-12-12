@@ -22,7 +22,7 @@ pub fn build(b: *std.Build) !void {
     // Test setup
     const main_tests = b.addTest(.{
         .name = "Testing",
-        .root_source_file = b.path("tests/All_test.zig"),
+        .root_source_file = b.path("tests/main_test.zig"),
         .link_libc = true,
     });
 

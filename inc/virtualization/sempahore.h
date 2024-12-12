@@ -1,0 +1,4 @@
+#ifndef COMPOS_SEMAPHORES_H_
+#define COMPOS_SEMAPHORES_H_
+
+#endif // COMPOS_SEMAPHORES_H_

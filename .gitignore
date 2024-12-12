@@ -6,3 +6,5 @@
 # Ignore build directories
 compile_commands.json
 .cache/
+
+**/docs
