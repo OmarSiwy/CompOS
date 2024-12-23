@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=11"/>
 <meta name="generator" content="Doxygen 1.9.6"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>A-RTOS-M: inc/process Directory Reference</title>
+<title>A-RTOS-M: unordered_set_node Struct Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -68,21 +68,63 @@ $(function() {
 </div>
 </div>
 
-<div id="nav-path" class="navpath">
-  <ul>
-<li class="navelem"><a class="el" href="dir_bfccd401955b95cf8c75461437045ac0.html">inc</a></li><li class="navelem"><a class="el" href="dir_a5ebb30e1ebd3f3c80572dbba9f1f7b5.html">process</a></li>  </ul>
-</div>
 </div><!-- top -->
 <div class="header">
-  <div class="headertitle"><div class="title">process Directory Reference</div></div>
+  <div class="summary">
+<a href="#pub-attribs">Public Attributes</a> &#124;
+<a href="structunordered__set__node-members.html">List of all members</a>  </div>
+  <div class="headertitle"><div class="title">unordered_set_node Struct Reference</div></div>
 </div><!--header-->
 <div class="contents">
+
+<p>Structure for a node in the unordered set.  
+ <a href="structunordered__set__node.html#details">More...</a></p>
+
+<p><code>#include &lt;<a class="el" href="unordered__set_8h_source.html">unordered_set.h</a>&gt;</code></p>
 <table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="files" name="files"></a>
-Files</h2></td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">file &#160;</td><td class="memItemRight" valign="bottom"><b>atomic.h</b> <a href="atomic_8h_source.html">[code]</a></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-attribs" name="pub-attribs"></a>
+Public Attributes</h2></td></tr>
+<tr class="memitem:a25c4d080d9042f91d7997f74e1d069d6"><td class="memItemLeft" align="right" valign="top">void *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structunordered__set__node.html#a25c4d080d9042f91d7997f74e1d069d6">data</a></td></tr>
+<tr class="separator:a25c4d080d9042f91d7997f74e1d069d6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac2c1423f84d3e838c8138ed4eb9ffdad"><td class="memItemLeft" align="right" valign="top">struct <a class="el" href="structunordered__set__node.html">unordered_set_node</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structunordered__set__node.html#ac2c1423f84d3e838c8138ed4eb9ffdad">next</a></td></tr>
+<tr class="separator:ac2c1423f84d3e838c8138ed4eb9ffdad"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><p>Structure for a node in the unordered set. </p>
+</div><h2 class="groupheader">Member Data Documentation</h2>
+<a id="a25c4d080d9042f91d7997f74e1d069d6" name="a25c4d080d9042f91d7997f74e1d069d6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a25c4d080d9042f91d7997f74e1d069d6">&#9670;&#160;</a></span>data</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void* unordered_set_node::data</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Pointer to the data stored in the node. </p>
+
+</div>
+</div>
+<a id="ac2c1423f84d3e838c8138ed4eb9ffdad" name="ac2c1423f84d3e838c8138ed4eb9ffdad"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac2c1423f84d3e838c8138ed4eb9ffdad">&#9670;&#160;</a></span>next</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">struct <a class="el" href="structunordered__set__node.html">unordered_set_node</a>* unordered_set_node::next</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Pointer to the next node (for chaining collisions). </p>
+
+</div>
+</div>
+<hr/>The documentation for this struct was generated from the following file:<ul>
+<li>inc/std/<a class="el" href="unordered__set_8h_source.html">unordered_set.h</a></li>
+</ul>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
