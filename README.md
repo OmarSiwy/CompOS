@@ -4,6 +4,23 @@
 
 ---
 
+## **Table of Contents**
+
+1. [Why Choose CompOS?](#why-choose-compos)
+2. [About Zig](#about-zig)
+    - [Benefits](#benefits)
+    - [Limitations](#limitations)
+3. [How to Use CompOS](#how-to-use-compos)
+    - [Using with Zig](#using-with-zig)
+    - [Using with C/C++](#using-with-cc)
+4. [Development](#development)
+    - [Testing](#testing)
+    - [Building IntelliSense](#building-intellisense)
+    - [Building for Your Project](#building-for-your-project)
+5. [Resources](#resources)
+
+---
+
 ## **Why Choose CompOS?**
 
 CompOS introduces **zero-task allocation overhead** and **context-switching based scheduling**, delivering ultra-low task-switching overhead. Leveraging **Zig's powerful compile-time semantics** and seamless **compatibility with Clang**, CompOS integrates effortlessly into Zig-based and C/C++ projects.
