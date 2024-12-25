@@ -7,7 +7,7 @@
 ## **Table of Contents**
 
 1. [Why Choose CompOS?](#why-choose-compos)
-2. [About Zig](#about-zig)
+2. [About Zig and C++](#about-zig-and-c)
     - [Benefits](#benefits)
     - [Limitations](#limitations)
 3. [How to Use CompOS](#how-to-use-compos)
@@ -23,20 +23,38 @@
 
 ## **Why Choose CompOS?**
 
-CompOS introduces **zero-task allocation overhead** and **context-switching based scheduling**, delivering ultra-low task-switching overhead. Leveraging **Zig's powerful compile-time semantics** and seamless **compatibility with Clang**, CompOS integrates effortlessly into Zig-based and C/C++ projects.
+CompOS recognizes existing RTOS structures and mimics them at a lower-cost, more performant abstraction through utilizing the power of new compiler features that Zig and C++ offer. (**Benchmarks are not done yet but it would be 1.5x performance while being slightly better memory effiency**). This library can be used with any C ABI-compatible languages.
 
 ---
 
-## **About Zig**
+## **About Zig and C++**
 
-### **Benefits**:
-- **Compile-time power**: Zig enables highly optimized code using its compile-time evaluation and metaprogramming capabilities.
-- **Safety features**: Built-in safety checks help eliminate common programming errors.
-- **Performance**: Zig focuses on minimal overhead, making it ideal for real-time systems.
+### Traditional FreeRTOS Tasks Challenges:
+1. Require **separate stacks** for each task, consuming significant memory.
+2. Use **manual creation and management** via `xTaskCreate`, leading to verbose code.
+3. Depend on **synchronization mechanisms** like semaphores or notifications, adding complexity.
+4. Suffer **memory overhead** due to pre-allocated stacks, regardless of actual usage.
+5. Introduce **context switching latency**, which impacts real-time responsiveness.
 
-### **Limitations**:
-- Zig's ecosystem is still growing, and some tools or libraries may not yet be available.
-- Requires familiarity with Zig and its unique features for optimal use.
+### Zig’s `async`/`await` Solution:
+1. **State Machines Replace Stacks**: 
+   - Zig coroutines store only the minimal state (variables and execution point), eliminating the need for per-task stacks.
+2. **Explicit Control with `await`**:
+   - Coroutines yield control explicitly at `await`, making them cooperative and reducing unnecessary context switches.
+3. **Reduced Memory Usage**:
+   - Tasks no longer require stacks, dramatically decreasing memory consumption.
+4. **Simplified Task Model**:
+   - Fewer APIs and boilerplate code compared to traditional task creation and management.
+
+### C++ Consteval and Constexpr Benefits:
+5. **Compile-Time Optimization with `comptime`**:
+   - Know the exact number of coroutines at compile time, enabling aggressive memory and performance optimizations.
+6. **Eliminate Heap Usage**:
+   - With all tasks and resources defined at compile time, the system can operate entirely without a heap.
+
+### Zig Benefit:
+7. **Unit Testing**:
+   - No need for google tests, instead use Zig's built in testing framework.
 
 ---
 

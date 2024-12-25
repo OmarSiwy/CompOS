@@ -88,13 +88,22 @@ pub fn init(b: *std.Build, options: InitOptions) !*std.Build.Step.Compile {
     };
     lib.dead_strip_dylibs = true;
 
-    // Collect & Compile source files (.c and .zig)
+    // Collect & Compile source files (.c)
     const source_slice = try OSBuilder.make.GlobFiles(b, "src/", ".c");
     const cflags = .{ "-std=c99", "-Wall", "-W", "-g", "-O2", "-ffast-math", "-ffunction-sections", "-fdata-sections" };
     lib.addCSourceFiles(.{
         .files = source_slice,
         .flags = &cflags,
     });
+
+    // Collect and compile source files (.cpp)
+    const source_slice2 = try OSBuilder.make.GlobFiles(b, "src/", ".cpp");
+    const cppflags = .{ "-std=c++17", "-Wall", "-W", "-g", "-O2", "-fno-exceptions", "-fno-rtti" };
+    lib.addCSourceFiles(.{
+        .files = source_slice2,
+        .flags = &cppflags,
+    });
+
     lib.addIncludePath(.{ .cwd_relative = build_root ++ "/../inc" });
 
     library = lib;
