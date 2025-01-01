@@ -1,4 +1,5 @@
 var searchData=
 [
-  ['next_0',['next',['../structlist__node__S.html#a637475d80361ef1778d741e86ebafd67',1,'list_node_S::next()'],['../structordered__map__node.html#aac88416c086ec704f0c6bb6ffbc7f811',1,'ordered_map_node::next()'],['../structordered__set__node.html#a6f759701639e464d77228500df676290',1,'ordered_set_node::next()'],['../structunordered__map__node.html#a0a0429d391dbb64f4713056e7c44ae40',1,'unordered_map_node::next()'],['../structunordered__set__node.html#ac2c1423f84d3e838c8138ed4eb9ffdad',1,'unordered_set_node::next()']]]
+  ['right_20now_20is_20to_20fully_20finalize_20the_20rtos_20codebase_20then_20start_20on_20this_20later_20on_0',['My priority right now, is to fully finalize the RTOS codebase then start on this later on',['../md_inc_2_h_a_l_2_r_e_a_d_m_e.html#autotoc_md1',1,'']]],
+  ['rtos_20codebase_20then_20start_20on_20this_20later_20on_1',['My priority right now, is to fully finalize the RTOS codebase then start on this later on',['../md_inc_2_h_a_l_2_r_e_a_d_m_e.html#autotoc_md1',1,'']]]
 ];

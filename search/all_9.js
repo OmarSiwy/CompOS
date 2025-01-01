@@ -1,7 +1,5 @@
 var searchData=
 [
-  ['max_5fcount_0',['max_count',['../structsemaphore.html#a68cdff9388c47b3dc46c2596eabb343c',1,'semaphore']]],
-  ['max_5ftasks_1',['max_tasks',['../structrun__queue__t.html#a9ee6922fb1d8be42da4a430b713790ac',1,'run_queue_t']]],
-  ['message_5fqueue_2',['message_queue',['../structmessage__queue.html',1,'']]],
-  ['mutex_3',['mutex',['../structmutex.html',1,'']]]
+  ['priority_20right_20now_20is_20to_20fully_20finalize_20the_20rtos_20codebase_20then_20start_20on_20this_20later_20on_0',['My priority right now, is to fully finalize the RTOS codebase then start on this later on',['../md_inc_2_h_a_l_2_r_e_a_d_m_e.html#autotoc_md1',1,'']]],
+  ['progress_1',['Still a heavy work in progress',['../md_inc_2_h_a_l_2_r_e_a_d_m_e.html',1,'']]]
 ];
