@@ -72,39 +72,80 @@ pub fn init(b: *std.Build, options: InitOptions) !*std.Build.Step.Compile {
     // Define library component with selected library type
     const lib = switch (lib_type) {
         .Static => b.addStaticLibrary(.{
-            .name = "helper",
+            .name = "CompOS",
             .root_source_file = .{ .cwd_relative = build_root ++ "/../src/ZigAPI.zig" },
-            .optimize = optimize,
+            .optimize = .ReleaseSmall,
             .target = TargetOption,
             .strip = true,
+            .single_threaded = true,
+            .pic = false, // No position independent code needed for static lib
         }),
         .Shared => b.addSharedLibrary(.{
-            .name = "helper",
+            .name = "CompOS",
             .root_source_file = .{ .cwd_relative = build_root ++ "/../src/ZigAPI.zig" },
-            .optimize = optimize,
+            .optimize = .ReleaseSmall,
             .target = TargetOption,
             .strip = true,
+            .single_threaded = true,
+            .pic = true,
         }),
     };
+    lib.linker_allow_shlib_undefined = true;
     lib.dead_strip_dylibs = true;
 
-    // Collect & Compile source files (.c)
+    // Add C source files with LTO flags
     const source_slice = try OSBuilder.make.GlobFiles(b, "src/", ".c");
-    const cflags = .{ "-std=c99", "-Wall", "-W", "-g", "-O2", "-ffast-math", "-ffunction-sections", "-fdata-sections" };
+    const cflags = .{
+        "-std=c99",
+        "-Os", // Optimize for size
+        "-fdata-sections", // Put data in separate sections
+        "-ffunction-sections", // Put functions in separate sections
+        "-fno-unwind-tables", // Remove unwind tables
+        "-fno-asynchronous-unwind-tables", // Remove async unwind tables
+        "-fno-stack-protector", // Remove stack protector
+        "-fomit-frame-pointer", // Remove frame pointer
+        "-fno-exceptions", // No exceptions
+        "-fno-rtti", // No runtime type info
+        "-fno-common", // No common symbols
+        "-fno-ident", // Remove ident section
+        "-fno-builtin", // No builtin functions
+        "-fno-plt", // No PLT
+        "-fno-stack-check", // No stack checking
+        "-mno-red-zone", // No red zone
+        "-fwhole-program", // Enable whole program optimization
+        "-ffunction-sections", // Put each function in its own section
+        "-fdata-sections", // Put each data item in its own section
+        "-Wl,--gc-sections", // Remove unused sections
+        "-Wl,--strip-all", // Strip all symbols
+        "-Wl,--build-id=none", // No build ID
+        "-Wl,-z,norelro", // No relro
+        "-Wl,--hash-style=gnu", // Use GNU hash style
+        "-Wl,--no-eh-frame-hdr", // No exception frame headers
+        "-Wl,--icf=all", // Identical code folding
+        if (TargetEnumVal == .testing) "-DTESTING_MODE" else "",
+    };
     lib.addCSourceFiles(.{
         .files = source_slice,
         .flags = &cflags,
     });
-
-    // Collect and compile source files (.cpp)
-    const source_slice2 = try OSBuilder.make.GlobFiles(b, "src/", ".cpp");
-    const cppflags = .{ "-std=c++17", "-Wall", "-W", "-g", "-O2", "-fno-exceptions", "-fno-rtti" };
-    lib.addCSourceFiles(.{
-        .files = source_slice2,
-        .flags = &cppflags,
-    });
-
     lib.addIncludePath(.{ .cwd_relative = build_root ++ "/../inc" });
+
+    // Install the library first
+    const install_lib = b.addInstallArtifact(lib, .{});
+
+    // Add size step after installation
+    const lib_extension = if (std.mem.eql(u8, lib_type_str, "Shared")) "so" else "a";
+    const lib_path = b.fmt("zig-out/lib/libCompOS.{s}", .{lib_extension});
+    const size_step = b.addSystemCommand(&[_][]const u8{
+        "size",
+        "-A", // Show section sizes
+        lib_path,
+    });
+    size_step.step.dependOn(&install_lib.step);
+
+    // Add size as a build step option
+    const size_step_option = b.step("size", "Display size information of the built artifact");
+    size_step_option.dependOn(&size_step.step);
 
     library = lib;
     return lib;

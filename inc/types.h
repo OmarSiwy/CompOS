@@ -60,6 +60,16 @@ typedef uint64_t size_t;
 #error "Unknown architecture detected. Cannot define standard types."
 #endif
 
+// General Defines
+#define NULL ((void *)0)
+#if defined(__UINT_FAST8_TYPE__)
+typedef __UINT_FAST8_TYPE__ uint_fast8_t;
+#elif defined(__UINT_LEAST8_TYPE__)
+typedef __UINT_LEAST8_TYPE__ uint_fast8_t;
+#else
+typedef unsigned char uint_fast8_t; // Fallback definition
+#endif
+
 /* --------------------------------------------------------------------------
  * Boolean Type Definition (if unavailable)
  * -------------------------------------------------------------------------- */

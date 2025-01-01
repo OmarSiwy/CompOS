@@ -6,6 +6,7 @@
 
 // ! Functions meant to be overriden by the user
 
+#ifndef TESTING_MODE
 /**
  * @brief Default PanicHandler.
  * Users can provide their own implementation to override this.
@@ -29,5 +30,11 @@ __attribute__((weak)) void PanicHandlerWithInfo(const char *file, int line,
   while (1)
     ;
 }
+#endif
+
+// Project Defines
+#ifndef TESTING_MODE
+#define ALLOCATOR_TYPE USE_LIST_ALLOCATOR
+#endif
 
 #endif

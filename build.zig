@@ -17,7 +17,6 @@ pub fn build(b: *std.Build) !void {
         .target = TargetStr,
         .lib_type = lib_type_str,
     });
-    b.installArtifact(lib);
 
     // Test setup
     const main_tests = b.addTest(.{

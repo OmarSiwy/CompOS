@@ -4,5 +4,5 @@ test {
     // Must be called to run nested tests
     std.testing.refAllDecls(@This());
 
-    _ = @import("list_test.zig"); // runs tests inside file
+    _ = @import("heap_test.zig"); // runs tests inside file
 }
