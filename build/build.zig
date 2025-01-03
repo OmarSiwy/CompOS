@@ -38,11 +38,13 @@ pub fn AddFirmware(b: *std.Build, custom_options: std.Build.ExecutableOptions) !
     return exe;
 }
 
-pub fn init(b: *std.Build, options: InitOptions) !*std.Build.Step.Compile {
+pub fn init(b: *std.Build, options: InitOptions, extraflags: []const u8) !*std.Build.Step.Compile {
+    // Options
     optimize = options.optimize;
     const TargetStr = options.target;
     const lib_type_str = options.lib_type;
 
+    // Target to Enumerator
     const TargetEnumVal = std.meta.stringToEnum(Targets.Targets.TargetEnum, TargetStr) orelse {
         std.debug.print("Received unknown target: {s}\n", .{TargetStr});
         return error.UnknownTarget;
@@ -52,24 +54,25 @@ pub fn init(b: *std.Build, options: InitOptions) !*std.Build.Step.Compile {
         std.debug.print("Target {s} is not supported\n", .{TargetStr});
         return error.UnsupportedTarget;
     }
-    TargetOption = switch (TargetEnumVal) {
-        .STM32F103, .STM32F407, .STM32F030, .STM32H743, .STM32F303, .STM32L476 => b.standardTargetOptions(.{
-            .default_target = .{
-                .cpu_arch = .thumb,
-                .cpu_model = .{ .explicit = selected_target.?.cpu_model },
-                .os_tag = .freestanding,
-                .abi = .none,
-            },
-        }),
-        else => b.standardTargetOptions(.{}),
-    };
 
+    if (TargetEnumVal == .testing) {
+        TargetOption = b.host; // if testing use host
+    } else {
+        const target_info = std.zig.CrossTarget{
+            .cpu_arch = .thumb,
+            .cpu_model = .{ .explicit = selected_target.?.cpu_model },
+            .os_tag = .freestanding,
+            .abi = .none,
+        };
+        TargetOption = b.resolveTargetQuery(target_info);
+    }
+
+    // Find Library Type
     const lib_type = std.meta.stringToEnum(LibraryType, lib_type_str) orelse {
         std.debug.print("Received unknown library type: {s}\n", .{lib_type_str});
         return error.UnknownLibraryType;
     };
 
-    // Define library component with selected library type
     const lib = switch (lib_type) {
         .Static => b.addStaticLibrary(.{
             .name = "CompOS",
@@ -78,7 +81,7 @@ pub fn init(b: *std.Build, options: InitOptions) !*std.Build.Step.Compile {
             .target = TargetOption,
             .strip = true,
             .single_threaded = true,
-            .pic = false, // No position independent code needed for static lib
+            .pic = (TargetEnumVal == .testing), // Enable PIC for testing, disable for other targets
         }),
         .Shared => b.addSharedLibrary(.{
             .name = "CompOS",
@@ -92,70 +95,47 @@ pub fn init(b: *std.Build, options: InitOptions) !*std.Build.Step.Compile {
     };
     lib.linker_allow_shlib_undefined = true;
     lib.dead_strip_dylibs = true;
+    lib.linkLibC();
 
     // Add C source files with LTO flags
     const source_slice = try OSBuilder.make.GlobFiles(b, "src/", ".c");
-    const cflags = .{
+    const cflags = b.allocator.dupe([]const u8, &[_][]const u8{
         "-std=c99",
-        "-Os", // Optimize for size
-        "-fdata-sections", // Put data in separate sections
-        "-ffunction-sections", // Put functions in separate sections
-        "-fno-unwind-tables", // Remove unwind tables
-        "-fno-asynchronous-unwind-tables", // Remove async unwind tables
-        "-fno-stack-protector", // Remove stack protector
-        "-fomit-frame-pointer", // Remove frame pointer
-        "-fno-exceptions", // No exceptions
-        "-fno-rtti", // No runtime type info
-        "-fno-common", // No common symbols
-        "-fno-ident", // Remove ident section
-        "-fno-builtin", // No builtin functions
-        "-fno-plt", // No PLT
-        "-fno-stack-check", // No stack checking
-        "-mno-red-zone", // No red zone
-        "-fwhole-program", // Enable whole program optimization
-        "-ffunction-sections", // Put each function in its own section
-        "-fdata-sections", // Put each data item in its own section
-        "-Wl,--gc-sections", // Remove unused sections
-        "-Wl,--strip-all", // Strip all symbols
-        "-Wl,--build-id=none", // No build ID
-        "-Wl,-z,norelro", // No relro
-        "-Wl,--hash-style=gnu", // Use GNU hash style
-        "-Wl,--no-eh-frame-hdr", // No exception frame headers
-        "-Wl,--icf=all", // Identical code folding
-        if (TargetEnumVal == .testing) "-DTESTING_MODE" else "",
-    };
+        "-Os",
+        "-fdata-sections",
+        "-ffunction-sections",
+        "-fno-unwind-tables",
+        "-fno-asynchronous-unwind-tables",
+        "-fno-stack-protector",
+        "-fomit-frame-pointer",
+        "-fno-exceptions",
+        "-fno-rtti",
+        "-fno-common",
+        "-fno-ident",
+        "-fno-builtin",
+        "-fno-plt",
+        "-fno-stack-check",
+        "-mno-red-zone",
+    }) catch unreachable;
+    defer b.allocator.free(cflags);
+
     lib.addCSourceFiles(.{
         .files = source_slice,
-        .flags = &cflags,
+        .flags = cflags,
     });
+    lib.defineCMacro("TESTING_MODE", "1");
+    lib.defineCMacro(extraflags, "1");
+    //std.debug.print("Received sources: {s}\n", .{source_slice});
     lib.addIncludePath(.{ .cwd_relative = build_root ++ "/../inc" });
-
-    // Install the library first
-    const install_lib = b.addInstallArtifact(lib, .{});
-
-    // Add size step after installation
-    const lib_extension = if (std.mem.eql(u8, lib_type_str, "Shared")) "so" else "a";
-    const lib_path = b.fmt("zig-out/lib/libCompOS.{s}", .{lib_extension});
-    const size_step = b.addSystemCommand(&[_][]const u8{
-        "size",
-        "-A", // Show section sizes
-        lib_path,
-    });
-    size_step.step.dependOn(&install_lib.step);
-
-    // Add size as a build step option
-    const size_step_option = b.step("size", "Display size information of the built artifact");
-    size_step_option.dependOn(&size_step.step);
 
     library = lib;
     return lib;
 }
 
-pub fn build(b: *std.Build) void {
+pub fn build(b: *std.Build) !void {
     _ = b;
 }
 
-/// Entry point to the Zig program, responsible for generating the linker script.
 pub fn generateLinker(target: []const u8, output_path: []const u8) !void {
     const Linker = @import("tools/LinkerGenerator.zig");
     const selected_target = Targets.SelectTarget(target);

@@ -34,20 +34,37 @@ extern "C" {
  * - NO_ALLOCATOR
  * - USE_CLANG_ALLOCATOR
  */
-#if defined(USE_LIST_ALLOCATOR) + defined(USE_RBTOPDOWN_ALLOCATOR) +           \
-        defined(USE_RBLINKED_ALLOCATOR) + defined(USE_ZIG_ALLOCATOR) +         \
+#if defined(USE_LIST_ALLOCATOR) + defined(USE_ZIG_ALLOCATOR) +         \
         defined(NO_ALLOCATOR) + defined(USE_CLANG_ALLOCATOR) !=                \
     1
-#warning                                                                       \
+#error                                                                         \
     "Exactly one allocator option must be defined. Define one of: USE_LIST_ALLOCATOR, USE_RBTOPDOWN_ALLOCATOR, USE_RBLINKED_ALLOCATOR, USE_ZIG_ALLOCATOR, or NO_ALLOCATOR, or USE_CLANG_ALLOCATOR."
+#endif
+#if defined(USE_LIST_ALLOCATOR)
+// #pragma message("Allocator Option: List Allocator")
+#elif defined(USE_ZIG_ALLOCATOR)
+// #pragma message("Allocator Option: Zig Allocator")
+#elif defined(NO_ALLOCATOR)
+// #pragma message("Allocator Option: No Allocator")
+#elif defined(USE_CLANG_ALLOCATOR)
+// #pragma message("Allocator Option: Clang Allocator")
+#else
+#pragma message("No Allocator Picked, Please go fix that")
 #endif
 
 /**
  * @brief Includes standard library memory functions when using CLANG allocator.
  */
 #if defined(USE_CLANG_ALLOCATOR)
+uint8_t AllocatorInit(void *heap_start, size_t heap_size) {
+    return 1;
+}
+
+void AllocatorDeinit() {
+    return;
+}
 #include <stdlib.h>
-#endif
+#else
 
 /**
  * @brief Memory allocation API declarations.
@@ -56,7 +73,6 @@ extern "C" {
  * are not set. Implementations are provided based on the selected allocator
  * strategy.
  */
-#if !defined(NO_ALLOCATOR) && !defined(USE_CLANG_ALLOCATOR)
 
 /**
  * @brief Initializes the heap allocator.
@@ -103,10 +119,14 @@ extern void *realloc(void *ptr, size_t NewSizeWanted);
  *        If `NULL`, no action is taken.
  */
 extern void free(void *ptr);
-#endif
 
+/**
+ * @brief Deinitializes the heap allocator.
+ */
+extern void AllocatorDeinit();
+
+#endif
 #ifdef __cplusplus
 }
 #endif
-
 #endif /* COMPOS_HEAP_H_ */

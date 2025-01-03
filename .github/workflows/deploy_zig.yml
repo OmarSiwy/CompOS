@@ -31,4 +31,4 @@ jobs:
         run: zig build -DCompile_Target=testing -Doptimize=ReleaseFast -DLibrary_Type=Static
 
       - name: Testing
-        run: zig build -DCompile_Target=testing -Doptimize=ReleaseFast -DLibrary_Type=Static test
+        run: zig build -Dtest=true test --summary all

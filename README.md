@@ -1,5 +1,7 @@
 # 🚀 **CompOS**
 
+<span style="color:red;">**Currently Project is written in C and Zig, however it will be transitioned to fully Zig once functionality is implemented for better performance.**</span>
+
 **Zero-task allocation overhead and ultra-low context-switching scheduling for your projects.**
 
 ---
@@ -56,6 +58,10 @@ CompOS recognizes existing RTOS structures and mimics them at a lower-cost, more
 7. **Unit Testing**:
    - No need for google tests, instead use Zig's built in testing framework.
 
+    Just Run:
+    ```bash
+    zig build -Dtest=true test --summary all
+    ```
 ---
 
 ## **How to Use CompOS**
@@ -114,23 +120,16 @@ zig build -Doptimize=ReleaseSafe -DCompile_Target=testing -DLibrary_Type=Static
 Run tests with the following command:
 
 ```bash
-zig build test -Doptimize=ReleaseSafe -DCompile_Target=testing -DLibrary_Type=Static
+zig build -Doptimize=ReleaseSafe -DCompile_Target=testing -DLibrary_Type=Static cdb # Generate Compile Commands file
+zig build -Doptimize=ReleaseSafe -DCompile_Target=testing -DLibrary_Type=Static size # Find Library Size
 ```
 
-### **Building IntelliSense**
-
-Generate a compilation database for IntelliSense:
-
-```bash
-zig build cdb -Doptimize=ReleaseSafe -DCompile_Target=testing -DLibrary_Type=Static
-```
-
-### **Building for Your Project**
+### **Building for Your Project from Source**
 
 To build CompOS for your project:
 
 ```bash
-zig build -Doptimize=ReleaseSafe -DCompile_Target=testing -DLibrary_Type=Static
+zig build -Doptimize=ReleaseSafe -DCompile_Target=testing -DLibrary_Type=Static cdb # Nested Compile Commands for your project <3
 ```
 
 ---
