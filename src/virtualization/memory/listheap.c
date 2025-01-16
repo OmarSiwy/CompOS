@@ -18,6 +18,10 @@
 #include "virtualization/memory/heap.h"
 
 #ifdef USE_LIST_ALLOCATOR
+/*
+* Slower than clang and zig allocator, so discontinued until I can beat it
+*/
+
 
 #include "types.h"
 #include <string.h>
