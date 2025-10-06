@@ -27,7 +27,7 @@
 
 CompOS recognizes existing RTOS structures and mimics them at a lower-cost, more performant abstraction through utilizing the power of new compiler features that Zig and C++ offer. (**Benchmarks are not done yet but it would be 1.5x performance while being slightly better memory efficiency**). This library can be used with any C ABI-compatible languages.
 
----
+--
 
 ## **About Zig and C++**
 
