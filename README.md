@@ -3,7 +3,7 @@
 **Zero-task allocation overhead and ultra-low context-switching scheduling for your projects.**
 
 <p align="center">
-  <img src="assets/architecture-diagram.svg" alt="CompOS Architecture Diagram" width="100%">
+  <img src="assets/book-cover-two.jpg" alt="" width="100%">
 </p>
 
 <span style="color:red;">**Currently Project is written in C and Zig, however it will be transitioned to fully Zig once functionality is implemented for better performance.**</span>
@@ -14,28 +14,29 @@
 
 1. [Why Choose CompOS?](#why-choose-compos)
 2. [About Zig and C++](#about-zig-and-c)
-    - [Benefits](#benefits)
-    - [Limitations](#limitations)
+   - [Benefits](#benefits)
+   - [Limitations](#limitations)
 3. [How to Use CompOS](#how-to-use-compos)
-    - [Using with Zig](#using-with-zig)
-    - [Using with C/C++](#using-with-cc)
+   - [Using with Zig](#using-with-zig)
+   - [Using with C/C++](#using-with-cc)
 4. [Development](#development)
-    - [Testing](#testing)
-    - [Building IntelliSense](#building-intellisense)
-    - [Building for Your Project](#building-for-your-project)
+   - [Testing](#testing)
+   - [Building IntelliSense](#building-intellisense)
+   - [Building for Your Project](#building-for-your-project)
 5. [Resources](#resources)
 
 ---
 
 ## **Why Choose CompOS?**
 
-CompOS recognizes existing RTOS structures and mimics them at a lower-cost, more performant abstraction through utilizing the power of new compiler features that Zig and C++ offer. (**Benchmarks are not done yet but it would be 1.5x performance while being slightly better memory effiency**). This library can be used with any C ABI-compatible languages.
+CompOS recognizes existing RTOS structures and mimics them at a lower-cost, more performant abstraction through utilizing the power of new compiler features that Zig and C++ offer. (**Benchmarks are not done yet but it would be 1.5x performance while being slightly better memory efficiency**). This library can be used with any C ABI-compatible languages.
 
 ---
 
 ## **About Zig and C++**
 
 ### Traditional FreeRTOS Tasks Challenges:
+
 1. Require **separate stacks** for each task, consuming significant memory.
 2. Use **manual creation and management** via `xTaskCreate`, leading to verbose code.
 3. Depend on **synchronization mechanisms** like semaphores or notifications, adding complexity.
@@ -43,7 +44,8 @@ CompOS recognizes existing RTOS structures and mimics them at a lower-cost, more
 5. Introduce **context switching latency**, which impacts real-time responsiveness.
 
 ### Zig’s `async`/`await` Solution:
-1. **State Machines Replace Stacks**: 
+
+1. **State Machines Replace Stacks**:
    - Zig coroutines store only the minimal state (variables and execution point), eliminating the need for per-task stacks.
 2. **Explicit Control with `await`**:
    - Coroutines yield control explicitly at `await`, making them cooperative and reducing unnecessary context switches.
@@ -53,19 +55,23 @@ CompOS recognizes existing RTOS structures and mimics them at a lower-cost, more
    - Fewer APIs and boilerplate code compared to traditional task creation and management.
 
 ### C++ Consteval and Constexpr Benefits:
+
 5. **Compile-Time Optimization with `comptime`**:
    - Know the exact number of coroutines at compile time, enabling aggressive memory and performance optimizations.
 6. **Eliminate Heap Usage**:
    - With all tasks and resources defined at compile time, the system can operate entirely without a heap.
 
 ### Zig Benefit:
+
 7. **Unit Testing**:
    - No need for google tests, instead use Zig's built in testing framework.
 
-    Just Run:
-    ```bash
-    zig build -Dtest=true test --summary all
-    ```
+   Just Run:
+
+   ```bash
+   zig build -Dtest=true test --summary all
+   ```
+
 ---
 
 ## **How to Use CompOS**
