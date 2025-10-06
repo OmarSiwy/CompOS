@@ -1,8 +1,12 @@
 # 🚀 **CompOS**
 
-<span style="color:red;">**Currently Project is written in C and Zig, however it will be transitioned to fully Zig once functionality is implemented for better performance.**</span>
-
 **Zero-task allocation overhead and ultra-low context-switching scheduling for your projects.**
+
+<p align="center">
+  <img src="assets/architecture-diagram.svg" alt="CompOS Architecture Diagram" width="100%">
+</p>
+
+<span style="color:red;">**Currently Project is written in C and Zig, however it will be transitioned to fully Zig once functionality is implemented for better performance.**</span>
 
 ---
 

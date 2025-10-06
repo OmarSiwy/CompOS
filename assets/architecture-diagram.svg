@@ -1,0 +1,141 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 800">
+  <defs>
+    <style>
+      .title { font: bold 32px sans-serif; fill: #2c3e50; }
+      .subtitle { font: bold 20px sans-serif; fill: #34495e; }
+      .text { font: 14px sans-serif; fill: #2c3e50; }
+      .small-text { font: 12px sans-serif; fill: #555; }
+      .header { font: bold 16px sans-serif; fill: white; }
+      .box { fill: #3498db; stroke: #2980b9; stroke-width: 2; }
+      .box-alt { fill: #e74c3c; stroke: #c0392b; stroke-width: 2; }
+      .box-green { fill: #2ecc71; stroke: #27ae60; stroke-width: 2; }
+      .box-purple { fill: #9b59b6; stroke: #8e44ad; stroke-width: 2; }
+      .box-orange { fill: #e67e22; stroke: #d35400; stroke-width: 2; }
+      .box-light { fill: #ecf0f1; stroke: #bdc3c7; stroke-width: 2; }
+      .arrow { fill: none; stroke: #34495e; stroke-width: 2; marker-end: url(#arrowhead); }
+      .arrow-compile { fill: none; stroke: #e67e22; stroke-width: 3; stroke-dasharray: 5,5; }
+    </style>
+    <marker id="arrowhead" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
+      <polygon points="0 0, 10 3, 0 6" fill="#34495e" />
+    </marker>
+  </defs>
+
+  <!-- Title -->
+  <text x="600" y="40" text-anchor="middle" class="title">CompOS Architecture</text>
+  <text x="600" y="70" text-anchor="middle" class="subtitle">Compile-Time Optimized Real-Time Operating System</text>
+
+  <!-- Compile-Time Layer -->
+  <rect x="50" y="100" width="500" height="200" rx="10" class="box-orange" opacity="0.2"/>
+  <text x="300" y="125" text-anchor="middle" class="subtitle" fill="#e67e22">⚡ Compile-Time Layer</text>
+
+  <rect x="80" y="145" width="200" height="80" rx="5" class="box-orange"/>
+  <text x="180" y="170" text-anchor="middle" class="header">Zig Comptime</text>
+  <text x="180" y="190" text-anchor="middle" class="small-text" fill="white">• Task Structure Analysis</text>
+  <text x="180" y="208" text-anchor="middle" class="small-text" fill="white">• Memory Layout Optimization</text>
+
+  <rect x="310" y="145" width="200" height="80" rx="5" class="box-orange"/>
+  <text x="410" y="170" text-anchor="middle" class="header">Static Allocation</text>
+  <text x="410" y="190" text-anchor="middle" class="small-text" fill="white">• Zero Runtime Overhead</text>
+  <text x="410" y="208" text-anchor="middle" class="small-text" fill="white">• Fixed Memory Footprint</text>
+
+  <!-- Runtime Layer -->
+  <rect x="650" y="100" width="500" height="200" rx="10" class="box-green" opacity="0.2"/>
+  <text x="900" y="125" text-anchor="middle" class="subtitle" fill="#27ae60">⚡ Runtime Layer</text>
+
+  <rect x="680" y="145" width="200" height="80" rx="5" class="box-green"/>
+  <text x="780" y="170" text-anchor="middle" class="header">Task Scheduler</text>
+  <text x="780" y="190" text-anchor="middle" class="small-text" fill="white">• Ultra-Low Latency</text>
+  <text x="780" y="208" text-anchor="middle" class="small-text" fill="white">• Cooperative Scheduling</text>
+
+  <rect x="910" y="145" width="200" height="80" rx="5" class="box-green"/>
+  <text x="1010" y="170" text-anchor="middle" class="header">State Machines</text>
+  <text x="1010" y="190" text-anchor="middle" class="small-text" fill="white">• No Stack Overhead</text>
+  <text x="1010" y="208" text-anchor="middle" class="small-text" fill="white">• Minimal Context Switch</text>
+
+  <!-- Core Components -->
+  <text x="600" y="345" text-anchor="middle" class="subtitle">Core Components</text>
+
+  <!-- CPU Virtualization -->
+  <rect x="80" y="370" width="220" height="180" rx="8" class="box"/>
+  <text x="190" y="395" text-anchor="middle" class="header">CPU Virtualization</text>
+  <rect x="95" y="405" width="190" height="35" rx="4" class="box-light"/>
+  <text x="190" y="427" text-anchor="middle" class="text">Task Management</text>
+  <rect x="95" y="450" width="190" height="35" rx="4" class="box-light"/>
+  <text x="190" y="472" text-anchor="middle" class="text">Scheduling</text>
+  <rect x="95" y="495" width="190" height="35" rx="4" class="box-light"/>
+  <text x="190" y="517" text-anchor="middle" class="text">Concurrency Control</text>
+
+  <!-- Memory Virtualization -->
+  <rect x="330" y="370" width="220" height="180" rx="8" class="box-purple"/>
+  <text x="440" y="395" text-anchor="middle" class="header">Memory Management</text>
+  <rect x="345" y="405" width="190" height="35" rx="4" class="box-light"/>
+  <text x="440" y="427" text-anchor="middle" class="text">Zig Heap Allocator</text>
+  <rect x="345" y="450" width="190" height="35" rx="4" class="box-light"/>
+  <text x="440" y="472" text-anchor="middle" class="text">List-Based Heap</text>
+  <rect x="345" y="495" width="190" height="35" rx="4" class="box-light"/>
+  <text x="440" y="517" text-anchor="middle" class="text">Memory Optimization</text>
+
+  <!-- Persistence -->
+  <rect x="580" y="370" width="220" height="180" rx="8" class="box-green"/>
+  <text x="690" y="395" text-anchor="middle" class="header">Persistence Layer</text>
+  <rect x="595" y="425" width="190" height="90" rx="4" class="box-light"/>
+  <text x="690" y="460" text-anchor="middle" class="text">Data Persistence</text>
+  <text x="690" y="480" text-anchor="middle" class="small-text">(Future Implementation)</text>
+
+  <!-- C ABI Interface -->
+  <rect x="830" y="370" width="290" height="180" rx="8" class="box-alt"/>
+  <text x="975" y="395" text-anchor="middle" class="header">Language Support</text>
+  <rect x="845" y="410" width="125" height="60" rx="4" class="box-light"/>
+  <text x="907" y="435" text-anchor="middle" class="text">Zig API</text>
+  <text x="907" y="453" text-anchor="middle" class="small-text">Native Interface</text>
+  <rect x="985" y="410" width="125" height="60" rx="4" class="box-light"/>
+  <text x="1047" y="435" text-anchor="middle" class="text">C/C++ API</text>
+  <text x="1047" y="453" text-anchor="middle" class="small-text">ABI Compatible</text>
+  <rect x="845" y="485" width="265" height="50" rx="4" class="box-light"/>
+  <text x="977" y="515" text-anchor="middle" class="text">Cross-Language Integration</text>
+
+  <!-- Build System -->
+  <rect x="80" y="590" width="1040" height="140" rx="8" class="box-light"/>
+  <text x="600" y="615" text-anchor="middle" class="subtitle">Build & Development Tools</text>
+
+  <rect x="110" y="635" width="180" height="70" rx="5" class="box"/>
+  <text x="200" y="660" text-anchor="middle" class="header">Zig Build System</text>
+  <text x="200" y="678" text-anchor="middle" class="small-text" fill="white">Cross-compilation</text>
+  <text x="200" y="693" text-anchor="middle" class="small-text" fill="white">Target Configuration</text>
+
+  <rect x="320" y="635" width="180" height="70" rx="5" class="box"/>
+  <text x="410" y="660" text-anchor="middle" class="header">Unit Testing</text>
+  <text x="410" y="678" text-anchor="middle" class="small-text" fill="white">Native Zig Tests</text>
+  <text x="410" y="693" text-anchor="middle" class="small-text" fill="white">Heap Tests</text>
+
+  <rect x="530" y="635" width="180" height="70" rx="5" class="box"/>
+  <text x="620" y="660" text-anchor="middle" class="header">Docker Support</text>
+  <text x="620" y="678" text-anchor="middle" class="small-text" fill="white">Containerized Build</text>
+  <text x="620" y="693" text-anchor="middle" class="small-text" fill="white">CI/CD Pipeline</text>
+
+  <rect x="740" y="635" width="180" height="70" rx="5" class="box"/>
+  <text x="830" y="660" text-anchor="middle" class="header">Examples</text>
+  <text x="830" y="678" text-anchor="middle" class="small-text" fill="white">Zig Projects</text>
+  <text x="830" y="693" text-anchor="middle" class="small-text" fill="white">C/C++ Projects</text>
+
+  <rect x="950" y="635" width="140" height="70" rx="5" class="box-purple"/>
+  <text x="1020" y="660" text-anchor="middle" class="header">Linker Tools</text>
+  <text x="1020" y="678" text-anchor="middle" class="small-text" fill="white">Script Generation</text>
+  <text x="1020" y="693" text-anchor="middle" class="small-text" fill="white">MCU Support</text>
+
+  <!-- Arrows showing data flow -->
+  <path d="M 300 235 L 300 370" class="arrow"/>
+  <path d="M 900 235 L 440 370" class="arrow"/>
+  <path d="M 900 235 L 690 370" class="arrow"/>
+
+  <!-- Compile-time optimization indicator -->
+  <path d="M 300 300 L 900 300" class="arrow-compile"/>
+  <text x="600" y="293" text-anchor="middle" class="small-text" fill="#e67e22" font-weight="bold">Compile-Time Optimization Flow</text>
+
+  <!-- Key Benefits Box -->
+  <rect x="50" y="750" width="1100" height="40" rx="5" fill="#2c3e50"/>
+  <text x="100" y="775" class="header" font-size="14">✓ Zero Runtime Allocation</text>
+  <text x="350" y="775" class="header" font-size="14">✓ Ultra-Low Context Switch</text>
+  <text x="650" y="775" class="header" font-size="14">✓ Minimal Memory Footprint</text>
+  <text x="950" y="775" class="header" font-size="14">✓ C ABI Compatible</text>
+</svg>
