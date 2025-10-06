@@ -2,10 +2,6 @@
 
 **Zero-task allocation overhead and ultra-low context-switching scheduling for your projects.**
 
-<p align="center">
-  <img src="assets/book-cover-two.jpg" alt="" width="100%">
-</p>
-
 <span style="color:red;">**Currently Project is written in C and Zig, however it will be transitioned to fully Zig once functionality is implemented for better performance.**</span>
 
 ---
@@ -147,5 +143,8 @@ zig build -Doptimize=ReleaseSafe -DCompile_Target=testing -DLibrary_Type=Static 
 ## **Resources**
 
 - **[Operating System: Three Easy Pieces](https://assets/book-cover-two.jpg)**
+<p align="center">
+  <img src="assets/book-cover-two.jpg" alt="" width="100%">
+</p>
 
 ---
